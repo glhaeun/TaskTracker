@@ -15,15 +15,16 @@ import {
   Tooltip,
   Typography
 } from '@mui/material';
-import { IconSettings } from '@tabler/icons';
+
+import {IconSettings} from '@tabler/icons-react';
 
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import SubCard from '../../component/cards/SubCard';
 import AnimateButton from '../../component/extended/AnimateButton';
 import { SET_BORDER_RADIUS, SET_FONT_FAMILY } from '../../redux/featuresFrontend/action'
-import { gridSpacing } from '../../redux/featuresFrontend/action';
-import { appDrawerWidth } from './../../redux/featuresFrontend/constant';
+import { gridSpacing } from '../../redux/featuresFrontend/constant';
+import { appDrawerWidth } from '../../redux/featuresFrontend/constant';
 
 function valueText(value) {
   return `${value}px`;
@@ -54,14 +55,14 @@ const Custom = () => {
   let fontInitial;
   switch(custom.fontFamily){
     case `'Inter', sans-serif`:
-      initialFont = 'Inter';
+      fontInitial = 'Inter';
       break;
     case `'Poppins', sans-serif`:
-      initialFont = 'Poppins';
+      fontInitial = 'Poppins';
       break;
     case `'Roboto', sans-serif`:
     default:
-      initialFont = 'Roboto';
+      fontInitial = 'Roboto';
       break;
   }
 
@@ -88,7 +89,7 @@ const Custom = () => {
         <Tooltip title="Customizer">
             <Fab
             component="div"
-            onClick={handleToggle}
+            onClick={handleOpenDrawer}
             size="medium"
             variant="circular"
             color="secondary"
@@ -114,7 +115,7 @@ const Custom = () => {
 
         <Drawer
         anchor="right"
-        onClose={handleToggle}
+        onClose={handleOpenDrawer}
         open={open}
         PaperProps={{
           sx: {
@@ -178,7 +179,7 @@ const Custom = () => {
                         <Slider
                         size="small"
                         value={borderRadius}
-                        onChange={handleBorderRadius}
+                        onChange={handleBorderRad}
                         getAriaValueText={valueText}
                         valueLabelDisplay="on"
                         aria-labelledby="discrete-slider-small-steps"

@@ -1,0 +1,12 @@
+.custom-scrollbar .ps__rail-x  {
+    display: none;
+}
+
+.custom-scrollbar .ps__rail-y {
+    max-height: 100px;
+}
+
+.custom-scrollbar .ps__thumb-y  {
+    display: none;
+}
+  

@@ -1,6 +1,6 @@
 const config = {
     basename: '/',
-    defaultPath: '/todo/view',
+    defaultPath: '/dashboard',
     fontFamily: `'Roboto', sans-serif`,
     borderRadius: 12
   };

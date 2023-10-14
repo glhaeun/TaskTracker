@@ -8,11 +8,10 @@ import { Box, Card, Divider, Grid, Typography } from '@mui/material';
 import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
 
 // project imports
-import config from 'config';
-import { gridSpacing } from 'store/constant';
+import config from '../../config';
+import { gridSpacing } from '../../redux/featuresFrontend/constant';
 
-// assets
-import { IconTallymark1 } from '@tabler/icons';
+import { IconTallymark1 } from '@tabler/icons-react';
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
 import HomeIcon from '@mui/icons-material/Home';
 import HomeTwoToneIcon from '@mui/icons-material/HomeTwoTone';
