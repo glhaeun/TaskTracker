@@ -13,6 +13,7 @@ import {
 
 const Dashboard = Loadable(lazy(()=> import('../views/pages/dashboard')))
 const ToDo = Loadable(lazy(()=> import('../views/pages/kanban')))
+const Journal = Loadable(lazy(()=> import('../views/pages/journal')))
 
 
 
@@ -64,7 +65,7 @@ const AppRoutes = {
         children: [
           {
             path: 'all',
-            element: <PrivateRoute element={<ToDo />} />,
+            element: <PrivateRoute element={<Journal />} />,
           }
         ],
       },
