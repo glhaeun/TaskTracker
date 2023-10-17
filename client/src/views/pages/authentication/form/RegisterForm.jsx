@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import authApi from '../../../../api/authApi';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -36,7 +37,6 @@ const RegisterForm = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-  const custom = useSelector((state) => state.custom);
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(true);
 
@@ -57,6 +57,49 @@ const RegisterForm = ({ ...others }) => {
     setLevel(strengthColor(temp));
   };
 
+  const handleSubmit = async (values, { setErrors, setSubmitting, setStatus }) => {
+    const { name, email, password } = values; 
+
+    try {
+      const isVerified = false
+
+      const now = new Date();
+      now.setHours(now.getHours() + 24);
+      const verificationExpiresAt = now;
+      const res = await authApi.signup({
+        username: email, password, name, isVerified, verificationExpiresAt
+      })
+      console.log(res)
+      setStatus({ success: true });
+      setSubmitting(false);
+      // navigate('/')
+    } catch (err) {
+      if (err.data && err.data.errors) {
+        const errors = err.data.errors;
+        const emailError = errors.find(e => e.param === 'username');
+        const passwordError = errors.find(e => e.param === 'password');
+        const nameError = errors.find(e => e.param === 'name');
+
+  
+        setErrors({ email: '', password: '', name: '' });
+  
+        if (emailError) {
+          setErrors({submit: emailError.msg});
+        }
+  
+        if (passwordError) {
+          setErrors({submit: passwordError.msg});
+        }
+
+        if( nameError) {
+          setErrors({submit: nameError.msg});
+        }
+        setStatus({ success: false });
+        setSubmitting(false);
+      }
+    }
+  }
+
 
   return (
     <>
@@ -75,57 +118,41 @@ const RegisterForm = ({ ...others }) => {
           submit: null
         }}
         validationSchema={Yup.object().shape({
+          name: Yup.string().min(8, 'Name is too short'),
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-          password: Yup.string().max(255).required('Password is required')
-        })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          try {
-            if (scriptedRef.current) {
-              setStatus({ success: true });
-              setSubmitting(false);
-            }
-          } catch (err) {
-            console.error(err);
-            if (scriptedRef.current) {
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
-            }
-          }
-        }}
+          password: Yup.string()
+          .min(8, 'Password must be at least 8 characters')
+          .max(255)
+          .required('Password is required')
+                })}
+        onSubmit={handleSubmit}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
-            <Grid container spacing={matchDownSM ? 0 : 2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="First Name"
-                  margin="normal"
-                  name="fname"
-                  type="text"
-                  defaultValue=""
-                  sx={{ ...theme.typography.customInput }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Last Name"
-                  margin="normal"
-                  name="lname"
-                  type="text"
-                  defaultValue=""
-                  sx={{ ...theme.typography.customInput }}
-                />
-              </Grid>
-            </Grid>
+            <FormControl fullWidth error={Boolean(touched.name && errors.name)} sx={{ ...theme.typography.customInput }}>
+              <InputLabel htmlFor="outlined-adornment-name-register">Name</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-name-register"
+                type="name"
+                value={values.name || ''}
+                name="name"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                inputProps={{}}
+              />
+              {touched.name && errors.name && (
+                <FormHelperText error id="standard-weight-helper-text--register">
+                  {errors.name}
+                </FormHelperText>
+              )}
+            </FormControl>
+
             <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-email-register">Email Address / Username</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-email-register"
                 type="email"
-                value={values.email}
+                value={values.email || ''}
                 name="email"
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -143,7 +170,7 @@ const RegisterForm = ({ ...others }) => {
               <OutlinedInput
                 id="outlined-adornment-password-register"
                 type={showPassword ? 'text' : 'password'}
-                value={values.password}
+                value={values.password || ''}
                 name="password"
                 label="Password"
                 onBlur={handleBlur}

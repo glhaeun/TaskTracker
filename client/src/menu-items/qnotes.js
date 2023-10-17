@@ -1,41 +1,48 @@
 // assets
-import { IconKey } from '@tabler/icons-react';
+
+import { IconTag } from '@tabler/icons-react';
 
 // constant
 const icons = {
-  IconKey
+  IconTag
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
 
 const notes = {
-  id: 'pages',
+  id: 'quicknotes',
   title: 'Pages',
   caption: 'Pages Caption',
   type: 'group',
   children: [
     {
-      id: 'notesDefault',
-      title: 'Quick Notes',
-      type: 'collapse',
-      icon: icons.IconKey,
-
-      children: [
-        {
-          id: 'journalAll',
-          title: 'All',
-          type: 'item',
-          url: '/journal/all',
-          target: true
-        },
-        {
-          id: 'journalPersonal',
-          title: 'Personal',
-          type: 'item',
-          url: '/journal/personal',
-          target: true
-        }
-      ]
+      id: 'quicknotesDefault',
+    title: 'Quick Notes',
+    type: 'collapse',
+    icon: icons.IconTag,
+    children: [
+      {
+        id: 'quicknotesDefault',
+        title: 'All',
+        type: 'item',
+        url: '/quicknotes',
+        target: true
+      },
+      {
+        id: 'quicknotesArchived',
+        title: 'Archived',
+        type: 'item',
+        url: '/quicknotes/archived',
+        target: true
+      },
+      {
+        id: 'quicknotesDelete',
+        title: 'Delete',
+        type: 'item',
+        url: '/quicknotes/deleted',
+        target: true
+      }
+    ]
     }
   ]
 };

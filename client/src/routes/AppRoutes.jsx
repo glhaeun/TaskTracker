@@ -1,26 +1,35 @@
-import {lazy} from 'react'
-import Loadable from "../component/Loadable"
+import { lazy } from 'react';
+import Loadable from "../component/Loadable";
 
-import MainLayout from '../layouts/MainLayout'
+import MainLayout from '../layouts/MainLayout';
+import PrivateRoute from './PrivateRoutes';
+import {
+  QuickNotes,
+  ArchiveNotes,
+  DeletedNotes
+} from "../views/pages/qnote/index";
 
-const Dashboard = Loadable(lazy(()=> import('./../views/pages/dashboard')))
-const ToDo = Loadable(lazy(()=> import('./../views/pages/todo2')))
+
+
+const Dashboard = Loadable(lazy(()=> import('../views/pages/dashboard')))
+const ToDo = Loadable(lazy(()=> import('../views/pages/kanban')))
+
 
 
 const AppRoutes = {
     path: '/',
-    element: <MainLayout />,
+    element: <PrivateRoute element={<MainLayout />} />,
     children: [
       {
         path: '/',
-        element: <Dashboard />
+        element: <PrivateRoute element={<Dashboard />} />
       },
       {
         path: 'dashboard',
         children: [
           {
             path: '/dashboard',
-            element: <Dashboard />
+            element:  <PrivateRoute element={<Dashboard />} />
           }
         ]
       },
@@ -29,11 +38,37 @@ const AppRoutes = {
         children: [
           {
             path: '/todo',
-            element: <ToDo />
+            element: <PrivateRoute element={<ToDo />} />
           }
         ]
       },
-    ]
+      {
+        path: 'quicknotes',
+        children: [
+          {
+            path: '',
+            element: <PrivateRoute element={<QuickNotes />} />,
+          },
+          {
+            path: 'archived',
+            element: <PrivateRoute element={<ArchiveNotes />} />,
+          },
+          {
+            path: 'deleted',
+            element: <PrivateRoute element={<DeletedNotes />} />,
+          },
+        ],
+      },
+      {
+        path: 'journal',
+        children: [
+          {
+            path: 'all',
+            element: <PrivateRoute element={<ToDo />} />,
+          }
+        ],
+      },
+    ],
   };
   
 

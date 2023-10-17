@@ -70,6 +70,7 @@ const ProfileSection = () => {
   const theme = useTheme();
   const custom = useSelector((state) => state.custom);
   const navigate = useNavigate();
+  const user = useSelector((state) => state.user.value)
 
   const [sdm, setSdm] = useState(true);
   const [value, setValue] = useState('');
@@ -77,10 +78,12 @@ const ProfileSection = () => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
   
+  const name = JSON.stringify(user.name)
   
   const anchorRef = useRef(null);
   const handleLogout = async () => {
-    // logout
+    localStorage.removeItem('token')
+    navigate('/login')
   };
 
   const handleClose = (event) => {
@@ -144,7 +147,7 @@ const ProfileSection = () => {
             aria-controls={open ? 'menu-list-grow' : undefined}
             aria-haspopup="true"
             color="inherit"
-            {...stringAvatar("Grace Lee")}
+            {...stringAvatar("Grace")}
           />
         }
         label={<IconSettings stroke={1.5} size="1.5rem" color={theme.palette.primary.main} />}
@@ -183,7 +186,7 @@ const ProfileSection = () => {
                       <Stack direction="row" spacing={0.5} alignItems="center">
                         <Typography variant="h4">Hello,</Typography>
                         <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                          Grace Lee
+                        {user.name}
                         </Typography>
                       </Stack>
                     </Stack>

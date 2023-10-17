@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom'
+import authApi from '../../../../api/authApi';
 
 import { useTheme } from '@mui/material/styles';
 import {
   Box,
   Button,
-  Checkbox,
-  Divider,
   FormControl,
-  FormControlLabel,
   FormHelperText,
   Grid,
   IconButton,
@@ -30,13 +29,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const LoginForm = ({ ...others }) => {
   const theme = useTheme();
-  const scriptedRef = useScriptRef();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-  const customization = useSelector((state) => state.custom);
-
-  const googleHandler = async () => {
-    console.error('Login');
-  };
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
@@ -46,6 +39,38 @@ const LoginForm = ({ ...others }) => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  const handleSubmit = async (values, { setErrors, setSubmitting, setStatus }) => {
+    const { email, password } = values; 
+    try {
+      const res = await authApi.login({ username: email, password });
+      console.log(res.token)
+      localStorage.setItem('token', res.token);
+      setStatus({ success: true });
+      setSubmitting(false);
+      navigate('/')
+    } catch (err) {
+      if (err.data && err.data.errors) {
+        const errors = err.data.errors;
+        const emailError = errors.find(e => e.param === 'username');
+        const passwordError = errors.find(e => e.param === 'password');
+  
+        setErrors({ email: '', password: '' });
+  
+        if (emailError) {
+          setErrors({submit: emailError.msg});
+        }
+  
+        if (passwordError) {
+          setErrors({submit: passwordError.msg});
+        }
+        setStatus({ success: false });
+        setSubmitting(false);
+      }
+      
+    }
+  };
+  
 
   return (
     <>
@@ -65,21 +90,7 @@ const LoginForm = ({ ...others }) => {
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
           password: Yup.string().max(255).required('Password is required')
         })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          try {
-            if (scriptedRef.current) {
-              setStatus({ success: true });
-              setSubmitting(false);
-            }
-          } catch (err) {
-            console.error(err);
-            if (scriptedRef.current) {
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
-            }
-          }
-        }}
+        onSubmit={handleSubmit}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
@@ -88,7 +99,7 @@ const LoginForm = ({ ...others }) => {
               <OutlinedInput
                 id="outlined-adornment-email-login"
                 type="email"
-                value={values.email}
+                value={values.email || ''}
                 name="email"
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -107,7 +118,7 @@ const LoginForm = ({ ...others }) => {
               <OutlinedInput
                 id="outlined-adornment-password-login"
                 type={showPassword ? 'text' : 'password'}
-                value={values.password}
+                value={values.password || ''}
                 name="password"
                 onBlur={handleBlur}
                 onChange={handleChange}

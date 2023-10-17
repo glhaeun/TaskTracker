@@ -36,10 +36,10 @@ const journal = {
           target: true
         },
         {
-          id: 'journalPersonal',
-          title: 'Personal',
+          id: 'journalDaily',
+          title: 'Daily',
           type: 'item',
-          url: '/journal/personal',
+          url: '/journal/daily',
           target: true
         }
       ]

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Navigate, useNavigate } from 'react-router-dom';
 
 import { styled, useTheme } from '@mui/material/styles';
 import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material';
@@ -14,6 +14,10 @@ import { SET_MENU } from '../../redux/featuresFrontend/action';
 // assets
 import { IconChevronRight } from '@tabler/icons-react';
 import Custom from '../Customization/Custom';
+import authUtils from '../../utils/authUtils';
+import { useEffect } from 'react';
+import {setUser} from '../../redux/features/userSlice';
+
 
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
@@ -60,10 +64,22 @@ const MainLayout = () => {
     dispatch({ type: SET_MENU, opened: !leftDrawerOpened });
   };
 
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const checkAuth = async() => {
+      const user = await authUtils.isAuthenticated()
+      if(!user) {
+        navigate('/login')
+      } else {
+        dispatch(setUser(user))
+      }
+    }
+    checkAuth()
+  })
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-
       <AppBar
         enableColorOnDark
         position="fixed"

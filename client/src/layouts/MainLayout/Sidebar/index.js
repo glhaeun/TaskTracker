@@ -31,7 +31,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
           component="div"
           className="custom-scrollbar"
           style={{
-            height: !matchUpMd ? 'calc(100vh - 56px)' : 'calc(100vh - 88px)',
+            height: !matchUpMd ? 'calc(100vh - 56px)' : 'calc(100vh - 80px)',
             paddingLeft: '16px',
             paddingRight: '16px'
           }}
@@ -64,7 +64,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
             color: theme.palette.text.primary,
             borderRight: 'none',
             [theme.breakpoints.up('md')]: {
-              top: '88px'
+              top: '80px'
             }
           }
         }}
