@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ContactInfo from "./cardInfo";
 import DialogBox from "./DialogBox";
 import NewCard from './newCard';
+import { Grid } from "@mui/material";
 
 const ContactList = ({ contacts }) => {
   const [open, setOpen] = useState(false);
@@ -17,23 +18,21 @@ const ContactList = ({ contacts }) => {
   };
 
   return (
-    <div className="flex flex-col mx-20">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div className="container mx-auto px-4">
+      <Grid container spacing={4}>
         {contacts &&
           contacts.map((contact) => (
-            <ContactInfo
-              key={contact.id}
-              contact={contact}
-              onContactUpdate={ContactUpdate}
-            />
+            <Grid item xs={12} sm={6} md={4} lg={3} key={contact.id}>
+              <ContactInfo contact={contact} onContactUpdate={ContactUpdate} />
+            </Grid>
           ))}
+      </Grid>
 
-        {open && (
-          <DialogBox open={open} OnDialogHandle={DialogHandle}>
-            <NewCard id={id} />
-          </DialogBox>
-        )}
-      </div>
+      {open && (
+        <DialogBox open={open} OnDialogHandle={DialogHandle}>
+          <NewCard id={id} />
+        </DialogBox>
+      )}
     </div>
   );
 };

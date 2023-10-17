@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { Button, TextField, Grid, Dialog, DialogTitle, DialogContent } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import * as yup from "yup";
 import { addContact, updateContact } from "../../../redux/featuresJournal/journal/journalSlice";
@@ -12,10 +12,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const NewCard = ({ id }) => {
   const {
+    control,
     register,
     handleSubmit,
-    formState: { errors },
     setValue,
+    formState: { errors },
   } = useForm({
     resolver: yupResolver(
       yup.object({
@@ -25,8 +26,14 @@ const NewCard = ({ id }) => {
       })
     ),
   });
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+
+    const handleClose = () => {
+      setOpen(false);
+      navigate("/journal/all");
+    };
+    const [open, setOpen] = useState(true);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
   const contactData = useSelector((state) =>
     state.contact.contactList.find((contact) => contact.id === id)
@@ -34,10 +41,10 @@ const NewCard = ({ id }) => {
 
   useEffect(() => {
     if (contactData) {
-      const { name, email, telephone } = contactData;
-      register("name", { defaultValue: name });  // Set default value for name field
-    register("email", { defaultValue: email });  // Set default value for email field
-    register("telephone", { defaultValue: telephone }); 
+    const { name, email, telephone } = contactData;
+    setValue("name", name);
+    setValue("email", email);
+    setValue("telephone", telephone);
     }
   }, [contactData, register]);
 
@@ -46,71 +53,89 @@ const NewCard = ({ id }) => {
 
     if (id) {
       editContact(name, email, telephone);
-      return;
+    } else {
+      dispatch(addContact({ name, email, telephone, id: uuidv4() }));
     }
-    dispatch(addContact({ name, email, telephone, id: uuidv4() }));
-    navigate("/");
+
+    handleClose();
   };
 
   const editContact = (name, email, telephone) => {
     dispatch(updateContact({ name, email, telephone, id }));
-    navigate("/");
   };
 
   return (
+    <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth>
+      <DialogTitle>{id ? "Edit Contact" : "Add New Contact"}</DialogTitle>
+      <DialogContent>
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="bg-white  p-4 px-4 text-sm ">
-        <div className="md:col-span-5">
-          <label htmlFor="full_name" className="text-left">
-            Full Name
-          </label>
-
-          <input
-            type="text"
-            className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-            placeholder="Full Name"
-            {...register("name")}
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Controller
+            name="name"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <TextField
+                fullWidth
+                label="Full Name"
+                variant="outlined"
+                error={!!errors.name}
+                helperText={errors.name?.message}
+                {...field}
+              />
+            )}
           />
-          <p className="mt-2 text-sm text-red-600">{errors.name?.message}</p>
-        </div>
-
-        <div className="mt-3">
-          <label htmlFor="email">Email</label>
-          <input
-            type="text"
-            className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-            placeholder="email@domain.com"
-            {...register("email")}
+        </Grid>
+        <Grid item xs={12}>
+          <Controller
+            name="email"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <TextField
+                fullWidth
+                label="Email"
+                variant="outlined"
+                error={!!errors.email}
+                helperText={errors.email?.message}
+                {...field}
+              />
+            )}
           />
-          <p className="mt-2 text-sm text-red-600">{errors.email?.message}</p>
-        </div>
-        <div className="mt-3">
-          <label htmlFor="email">PhoneNumber</label>
-          <input
-            type="text"
-            className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-            placeholder="250 788 841 494"
-            {...register("telephone")}
+        </Grid>
+        <Grid item xs={12}>
+          <Controller
+            name="telephone"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <TextField
+                fullWidth
+                label="Phone Number"
+                variant="outlined"
+                error={!!errors.telephone}
+                helperText={errors.telephone?.message}
+                {...field}
+              />
+            )}
           />
-          <p className="mt-2 text-sm text-red-600">
-            {errors.telephone?.message}
-          </p>
-        </div>
-
-        <div className="mt-3 text-right">
-          <div className="inline-flex items-end">
-            <button
-              type="submit"
-              className="flex items-center bg-indigo-600 text-white hover:bg-purple-500 p-2 rounded text-sm w-auto"
-              // onClick={onSubmitHandle}
-            >
-              <IconPawFilled />
-              <span>&nbsp;Submit</span>
-            </button>
-          </div>
-        </div>
-      </div>
+        </Grid>
+        <Grid item xs={12} textAlign="right">
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            startIcon={<IconPawFilled />}
+            type="submit"
+          >
+            Submit
+          </Button>
+        </Grid>
+      </Grid>
     </form>
+    </DialogContent>
+    </Dialog>
   );
 };
 
