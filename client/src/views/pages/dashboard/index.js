@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 
 // project imports
+import { gridSpacing } from '../../../redux/featuresCustom/constant';
 import EarningCard from './EarningCard';
-import TotalOrderLineChartCard from './TotalOrderLineChartCard';
 import TotalIncomeDarkCard from './TotalIncomeDarkCard';
 import TotalIncomeLightCard from './TotalIncomeLightCard';
-import { gridSpacing } from '../../../redux/featuresFrontend/constant';
+import TotalOrderLineChartCard from './TotalOrderLineChartCard';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 

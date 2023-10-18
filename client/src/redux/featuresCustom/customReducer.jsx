@@ -1,6 +1,6 @@
-import config from '../../config'; 
+import config from '../../config';
 
-import * as actionTypes from '../featuresFrontend/action';
+import * as actionTypes from './action';
 
 export const initialState = {
   isOpen: [], // for active default menu

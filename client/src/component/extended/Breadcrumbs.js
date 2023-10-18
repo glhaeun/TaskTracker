@@ -3,18 +3,18 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
 import { Box, Card, Divider, Grid, Typography } from '@mui/material';
 import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
+import { useTheme } from '@mui/material/styles';
 
 // project imports
 import config from '../../config';
-import { gridSpacing } from '../../redux/featuresFrontend/constant';
+import { gridSpacing } from '../../redux/featuresCustom/constant';
 
-import { IconTallymark1 } from '@tabler/icons-react';
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
 import HomeIcon from '@mui/icons-material/Home';
 import HomeTwoToneIcon from '@mui/icons-material/HomeTwoTone';
+import { IconTallymark1 } from '@tabler/icons-react';
 
 const linkSX = {
   display: 'flex',

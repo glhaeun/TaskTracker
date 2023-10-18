@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useTheme } from '@mui/material/styles';
 import {
   Drawer,
   Fab,
@@ -15,16 +14,16 @@ import {
   Tooltip,
   Typography
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
-import {IconSettings} from '@tabler/icons-react';
+import { IconSettings } from '@tabler/icons-react';
 
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import SubCard from '../../component/cards/SubCard';
 import AnimateButton from '../../component/extended/AnimateButton';
-import { SET_BORDER_RADIUS, SET_FONT_FAMILY } from '../../redux/featuresFrontend/action'
-import { gridSpacing } from '../../redux/featuresFrontend/constant';
-import { appDrawerWidth } from '../../redux/featuresFrontend/constant';
+import { SET_BORDER_RADIUS, SET_FONT_FAMILY } from '../../redux/featuresCustom/action';
+import { gridSpacing } from '../../redux/featuresCustom/constant';
 
 function valueText(value) {
   return `${value}px`;

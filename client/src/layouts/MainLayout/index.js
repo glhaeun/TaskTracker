@@ -1,22 +1,22 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet, Navigate, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
-import { styled, useTheme } from '@mui/material/styles';
 import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material';
+import { styled, useTheme } from '@mui/material/styles';
 
 import Breadcrumbs from '../../component/extended/Breadcrumbs';
+import navigation from '../../menu-items';
+import { SET_MENU } from '../../redux/featuresCustom/action';
+import { drawerWidth } from '../../redux/featuresCustom/constant';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import navigation from '../../menu-items';
-import { drawerWidth } from '../../redux/featuresFrontend/constant';
-import { SET_MENU } from '../../redux/featuresFrontend/action';
 
 // assets
 import { IconChevronRight } from '@tabler/icons-react';
-import Custom from '../Customization/Custom';
-import authUtils from '../../utils/authUtils';
 import { useEffect } from 'react';
-import {setUser} from '../../redux/features/userSlice';
+import { setUser } from '../../redux/featuresLogin/userSlice';
+import authUtils from '../../utils/authUtils';
+import Custom from '../Customization/Custom';
 
 
 // styles

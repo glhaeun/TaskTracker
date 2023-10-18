@@ -1,18 +1,18 @@
 import PropTypes from 'prop-types';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
 import { Box, Drawer, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 // third-party
-import PerfectScrollbar from 'react-perfect-scrollbar';
 import { BrowserView, MobileView } from 'react-device-detect';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 
-import MenuList from './MenuList';
+import { drawerWidth } from '../../../redux/featuresCustom/constant';
 import LogoSection from '../LogoSection';
-import { drawerWidth } from '../../../redux/featuresFrontend/constant';
+import MenuList from './MenuList';
 
-import './ScrollBar.css'
+import './ScrollBar.css';
 
 
 const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
