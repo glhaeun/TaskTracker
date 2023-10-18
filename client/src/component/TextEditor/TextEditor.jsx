@@ -38,7 +38,7 @@ const TextEditor = ({ value, setValue, color }) => {
         modules={modules}
         value={value}
         onChange={setValue}
-        placeholder="Write your note here ..."
+        placeholder="Write your journal entry here ..."
       />
     </Container>
   );

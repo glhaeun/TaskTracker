@@ -5,6 +5,8 @@ import userReducer from "./featuresLogin/userSlice";
 import modalReducer from './featuresNotes/modal/modalSlice';
 import notesListReducer from './featuresNotes/notesList/notesListSlice';
 import tagsReducer from './featuresNotes/tags/tagsSlice';
+import tesReducer from './featuresJournal/tesSlice';
+
 
 
 const store = configureStore({
@@ -14,7 +16,8 @@ const store = configureStore({
     notesList: notesListReducer,
     modal: modalReducer,
     tags: tagsReducer, 
-    contact: journalReducer 
+    contact: journalReducer ,
+    journal: tesReducer
   },
   devTools: process.env.NODE_ENV !== 'production', // Enable Redux DevTools in development
 });

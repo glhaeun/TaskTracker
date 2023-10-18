@@ -13,7 +13,7 @@ import {
 
 const Dashboard = Loadable(lazy(()=> import('../views/pages/dashboard')))
 const ToDo = Loadable(lazy(()=> import('../views/pages/kanban')))
-const Journal = Loadable(lazy(()=> import('../views/pages/journal')))
+const Journal = Loadable(lazy(()=> import('../views/pages/journalTes')))
 
 
 

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { schemaOptions } = require('./modelOptions')
+const Schema = mongoose.Schema
 
 const journalSchema = new mongoose.Schema({
     user: {

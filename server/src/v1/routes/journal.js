@@ -1,11 +1,8 @@
 const router = require('express').Router()
 const journalController = require('../controllers/journal')
-const { body } = require('express-validator')
+const { param, body } = require('express-validator')
 const validation = require('../handlers/validation')
 const tokenHandler = require('../handlers/tokenHandler')
-const User = require('../models/user')
-const path = require("path")
-const bcrypt = require("bcrypt")
 
 router.post(
     '/',
@@ -26,6 +23,6 @@ router.get(
       } else return Promise.resolve()
     }),
     tokenHandler.verifyToken,
-    taskController.getAll
+    journalController.getAll
   )
   
