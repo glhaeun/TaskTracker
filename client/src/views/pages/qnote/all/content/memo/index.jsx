@@ -1,33 +1,53 @@
-import { useState } from "react";
+import { startTransition, useState } from "react";
 
 //styles
 import {
-  ButtonOutline,
   Container,
   EmptyMsgBox,
   NotesContainer,
 } from "../../../style";
-import { Box, InputBox, TopBox } from "./styles";
-
+import { Box, Header, Controls, Username, Text } from "./styles";
 
 //reddux
 import { useDispatch, useSelector } from "react-redux";
-import { toggleFiltersModal } from "../../../../../../redux/featuresNotes";
+import { toggleCreateNoteModal, toggleFiltersModal } from "../../../../../../redux/featuresNotes";
 
 //components
-import { FiltersModal, NoteCard } from "../../../../../../component";
+import { CreateNoteModal, FiltersModal, NoteCard } from "../../../../../../component";
 
-import { IconSearch, IconSortAscending } from "@tabler/icons-react";
+import { IconPlus, IconSearch, IconSortAscending } from "@tabler/icons-react";
 import { getAllNotes } from "../../../../../../utils";
+import { useLocation } from "react-router-dom";
+import { AppBar, Button, InputBase, Toolbar } from "@mui/material";
 
 const AllNotes = () => {
   const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.user.value)
 
   const { mainNotes } = useSelector((state) => state.notesList)
   const { viewFiltersModal } = useSelector((state) => state.modal);
 
   const [filter, setFilter] = useState("");
   const [searchInput, setSearchInput] = useState("");
+
+  //getting path
+  const location = useLocation();
+  const { pathname, state } = location;
+
+  const { viewCreateNoteModal } = useSelector((state) => state.modal);
+
+
+  //not displaying navbar in the following path
+  if (pathname === "/" || pathname === "/404") {
+    return;
+  }
+ 
+  const handleClick = () => {
+    startTransition(() => {
+      dispatch(toggleCreateNoteModal(true));
+    });
+  };
 
   // handle all filters
   const filterHandler = (e) => {
@@ -72,30 +92,46 @@ const AllNotes = () => {
         <EmptyMsgBox>There are no notes</EmptyMsgBox>
       ) : (
         <>
-          <TopBox>
-            <InputBox>
-              <div className="notes__search-icon">
-                <IconSearch />
-              </div>
-              <input
-                type="text"
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                placeholder="Search note title .."
-              />
-            </InputBox>
-            <div className="notes__filter-btn">
-              <ButtonOutline
-                onClick={() => dispatch(toggleFiltersModal(true))}
-                className="nav__btn"
-              >
-                <IconSortAscending /> <span>Filters</span>
-              </ButtonOutline>
+      <AppBar position="static" color="transparent">
+        <Toolbar sx={{display:"flex",
+        justifyContent: "space-between",
+        alignItems: "center"}}>
+          <Header>
+            <Username>Hi {user.name}</Username>
+            <Text>Here is your quick notes</Text>
+          </Header>
+          <Controls>
+          <InputBase
+            className="flex items-center h-10 px-4 ml-10 text-sm w-full bg-gray-200 rounded-full"
+            placeholder="Search Notes …"
+            inputProps={{ "aria-label": "search" }}
+            onChange={(e) => setSearchInput(e.target.value)}
+            value={searchInput}
+            startAdornment={<IconSearch />}
+            type="text"
+            />
+            <Button
+            variant="contained"
+            color="primary"
+            onClick={() => dispatch(toggleFiltersModal(true))}
+            startIcon={<IconSortAscending />}
+           />
+            <div>
+                {viewCreateNoteModal && <CreateNoteModal />}
+                  {state !== "Trash" && state !== "Archive" && (
+                    <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleClick}
+                    startIcon={<IconPlus />}
+                   />
+                  )}
             </div>
-          </TopBox>
-
-          <Box>
-            {searchInput !== ""
+          </Controls>
+          </Toolbar>
+          </AppBar>
+                  
+          <Box style={{ margin: "16px 0" }}>            {searchInput !== ""
               ? searchResult()
               : getAllNotes(mainNotes, filter, searchInput)}
           </Box>

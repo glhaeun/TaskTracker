@@ -1,58 +1,96 @@
-import React from "react";
-import { Button, Card, CardContent, Typography, Avatar, CardMedia } from "@mui/material";
-import { Icon123, Icon12Hours } from "@tabler/icons-react";
+import { Button, Drawer, Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { Icon123, IconCircleMinus, IconEdit, IconQuotes, IconCalendar } from "@tabler/icons-react";
+import React, { useState } from "react";
 import { useDispatch } from 'react-redux';
-import { removeJournal } from "../../../redux/featuresJournal/tesSlice";
+import { removeJournal } from "../../../redux/featuresJournal/journal/tesSlice";
+import Chip from "../../extended/Chips";
+import "./styleCardInfo.css"
 
 const JournalInfo = (props) => {
   const dispatch = useDispatch();
   const journal = props.journal;
   const content = journal.content
 
+  const [openDrawer, setOpenDrawer] = useState(false);
+
+  const handleOpenDrawer = () => {
+    setOpenDrawer(true);
+  };
+
+  const handleCloseDrawer = () => {
+    setOpenDrawer(false);
+  };
+
   const setUpdatePage = () => {
     props.onJournalUpdate(journal.id);
   };
 
+  console.log(journal.content)
+
+
+
   return (
     <>
-    <Card className="mb-3">
+    <Card className="mb-3 card">
+
+      
+
     <CardMedia
         sx={{ height: 140 }}
-        image="https://i.pinimg.com/280x280_RS/ab/a2/8e/aba28eb29f66aab5f24db128a0232f3f.jpg"
-        title="green iguana"
+        image={journal.photo !== undefined? journal.photo.toString(): "https://i.pinimg.com/280x280_RS/ab/a2/8e/aba28eb29f66aab5f24db128a0232f3f.jpg" }
+        title="Journal Cover"
+        onClick={handleOpenDrawer } // Open the modal when the card is clicked
+        style={{ cursor: "pointer" }}
       />
+  
+
       <CardContent className="flex flex-col p-4 group cursor-pointer hover:bg-opacity-100 hover:bg-gray-100">
-        <div className="flex items-center justify-between mb-3">
-          <Typography variant="h6">{journal.title}</Typography>
-          <Button onClick={setUpdatePage}>
-            <Icon12Hours />
-          </Button>
-          <Button onClick={() => dispatch(removeJournal(journal.id))}>
-            <Icon123 />
-          </Button>
-        </div>
+      <Typography variant="h2">{journal.title}</Typography>
         <div className="flex items-center mb-3">
-          <Icon123 />
+          <IconQuotes />
           <Typography variant="body2" className="ml-1">
             {journal.caption}
           </Typography>
         </div>
         <div className="flex items-center mb-3">
-          <Icon123 />
           <Typography variant="body2" className="ml-1">
           {content.toString().length > 50 ? content.slice(0, 10) + " ..." : content}
           </Typography>
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center" >
           <div className="flex items-center mr-4">
-            <Icon123 />
+            <IconCalendar />
             <Typography variant="body2" className="ml-1">
             {journal.date}
             </Typography>
           </div>
         </div>
+        <div className="cardinfo-box-labels">
+            {journal.categories?.map((item, index) => (
+            <Chip key={index} item={item}  />
+            ))}
+        </div>
+
+        <div className="flex items-center justify-between mb-3">
+          <Button onClick={setUpdatePage}>
+            <IconEdit />
+          </Button>
+          <Button onClick={() => dispatch(removeJournal(journal.id))}>
+            <IconCircleMinus />
+          </Button>
+        </div>
       </CardContent>
     </Card>
+
+    <Drawer anchor="right" open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { width: 500 } }}>
+        {/* Drawer content */}
+        <Typography variant="h2">{journal.title}</Typography>
+        <Typography variant="h4">{journal.caption}</Typography>
+        <Typography dangerouslySetInnerHTML={{ __html: journal.content }} />
+
+        <Button onClick={handleCloseDrawer}>Close</Button>
+    </Drawer>
+
     </>
   );
 };

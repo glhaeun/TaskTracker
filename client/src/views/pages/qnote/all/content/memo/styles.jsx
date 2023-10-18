@@ -2,17 +2,23 @@ import styled from "styled-components";
 
 export const TopBox = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   margin: 10px 0 40px;
 
   .notes__filter-btn {
-    flex-basis: 65%;
     text-align: start;
+    
+  }
+
+  .notes__filter-btn .nav__btn {
+    display: flex;
+    align-items: center;
   }
 
   @media screen and (max-width: 650px) {
     justify-content: space-between;
     .notes__filter-btn {
+
       flex-basis: 5%;
       button {
         margin-right: 0px;
@@ -72,6 +78,7 @@ export const InputBox = styled.div`
 
 export const Box = styled.div`
   .allNotes__notes-type {
+
     margin-bottom: 15px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.5);
@@ -83,3 +90,31 @@ export const Box = styled.div`
     }
   }
 `;
+
+export const Header = styled.div`
+  @media (max-width: 1050px) {
+    display: none;
+  }
+`
+export const Username = styled.span`
+  font-size: 24px;
+  text-align: center;
+  letter-spacing: 0.1px;
+  color: #171725;
+  @media (max-width: 450px) {
+    display: none;
+  }
+`
+export const Text = styled.span`
+  font-size: 18px;
+  letter-spacing: 0.1px;
+  color: #92929d;
+  margin-left: 10px;
+  font-family: 'Roboto', sans-serif;
+`
+export const Controls = styled.div`
+  display: flex;
+  justify-items: space-between;
+  margin-right: 20px;
+`
+

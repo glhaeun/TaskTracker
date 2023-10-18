@@ -22,7 +22,7 @@ const JournalList = ({ journal }) => {
       <Grid container spacing={4}>
         {journal &&
           journal.map((entry) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={entry.id}>
+            <Grid item xs={12} sm={6} md={4} lg={3} key={entry.id} style={{ minWidth: '250px' }}>
               <JournalInfo id={entry.id} journal={entry} onJournalUpdate={JournalUpdate} />
             </Grid>
           ))}

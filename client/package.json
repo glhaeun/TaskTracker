@@ -24,6 +24,7 @@
     "@hookform/resolvers": "^3.3.2",
     "@mui/icons-material": "5",
     "@mui/material": "5",
+    "@mui/styles": "^5.14.14",
     "@reduxjs/toolkit": "^1.9.6",
     "@tabler/core": "^1.0.0-beta20",
     "@tabler/icons-react": "^2.38.0",

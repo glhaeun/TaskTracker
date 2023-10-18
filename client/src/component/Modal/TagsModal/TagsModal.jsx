@@ -1,12 +1,18 @@
-import { useState } from "react";
-
-//styles
-import { Box, StyledInput, TagsBox, AddBox } from "./TagsModal.styles";
-import { FixedContainer, DeleteBox } from "../Modal.styles";
-
-//icons
-
-//redux
+import React, { useState } from "react";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  IconButton,
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addTags,
@@ -14,19 +20,29 @@ import {
   removeTags,
   toggleTagsModal,
 } from "../../../redux/featuresNotes";
-
-//others
 import { v4 } from "uuid";
+import {
+  IconCheck,
+  IconX,
+  IconMinus,
+  IconPlus,
+} from "@tabler/icons-react";
 import { getStandardName } from "../../../utils";
-import { IconCheck, IconCross, IconMinus, IconPlus } from "@tabler/icons-react";
+
+const useStyles = makeStyles((theme) => ({
+  dialogTitle: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+}));
 
 const TagsModal = ({ type, addedTags, handleTags }) => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const { tagsList } = useSelector((state) => state.tags);
-
   const [inputText, setInputText] = useState("");
 
-  //add tags
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -38,63 +54,64 @@ const TagsModal = ({ type, addedTags, handleTags }) => {
     setInputText("");
   };
 
-  // deleting tag from tags list and
-  // from the already added notes
   const deleteTagsHandler = (tag, id) => {
     dispatch(deleteTags(id));
     dispatch(removeTags({ tag }));
   };
 
   return (
-    <FixedContainer>
-      <Box>
-        <div className="editTags__header">
-          <div className="editTags__title">
-            {type === "add" ? "Add" : "Edit"} Tags
-          </div>
-          <DeleteBox
-            className="editTags__close"
-            onClick={() => dispatch(toggleTagsModal({ type, view: false }))}
-          >
-            <IconCross />
-          </DeleteBox>
-        </div>
-
-        <form onSubmit={submitHandler}>
-          <StyledInput
+    <Dialog open={true} onClose={() => dispatch(toggleTagsModal({ type, view: false }))}>
+      <DialogTitle className={classes.dialogTitle}>
+        <div className="editTags__title">{type === "add" ? "Add" : "Edit"} Tags</div>
+      </DialogTitle>
+      <DialogContent>
+        <form onSubmit={submitHandler} style={{
+      display: "flex"}}>
+          <TextField
+            fullWidth
             type="text"
             value={inputText}
             placeholder="New Tag .."
             onChange={(e) => setInputText(e.target.value)}
           />
-          <AddBox onClick={submitHandler} check={inputText}>
+          <IconButton onClick={submitHandler} disabled={!inputText}>
             <IconCheck />
-          </AddBox>
+          </IconButton>
         </form>
-        <TagsBox>
+        <List>
           {tagsList.map(({ tag, id }) => (
-            <li key={id}>
-              <div className="editTags__tag">{getStandardName(tag)}</div>
+            <ListItem key={id}>
+              <ListItemText primary={getStandardName(tag)} />
               {type === "edit" ? (
-                <DeleteBox onClick={() => deleteTagsHandler(tag, id)}>
-                  <IconCross />
-                </DeleteBox>
+                <ListItemSecondaryAction>
+                  <IconButton onClick={() => deleteTagsHandler(tag, id)}>
+                    <IconX />
+                  </IconButton>
+                </ListItemSecondaryAction>
               ) : (
-                <DeleteBox>
-                  {addedTags?.find(
-                    (addedTag) => addedTag.tag === tag.toLowerCase()
-                  ) ? (
-                    <IconMinus onClick={() => handleTags(tag, "remove")} />
+                <ListItemSecondaryAction>
+                  {addedTags?.find((addedTag) => addedTag.tag === tag.toLowerCase()) ? (
+                    <IconButton onClick={() => handleTags(tag, "remove")}>
+                      <IconMinus />
+                    </IconButton>
                   ) : (
-                    <IconPlus onClick={() => handleTags(tag, "add")} />
-                  )}
-                </DeleteBox>
+                    <IconButton onClick={() => handleTags(tag, "add")}>
+                      <IconPlus />
+                    </IconButton>
+                  )
+                  }
+                </ListItemSecondaryAction>
               )}
-            </li>
+            </ListItem>
           ))}
-        </TagsBox>
-      </Box>
-    </FixedContainer>
+        </List>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => dispatch(toggleTagsModal({ type, view: false }))} color="primary">
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

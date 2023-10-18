@@ -100,7 +100,6 @@ const CardInfo = (props) => {
 
   useEffect(() => {
     if (updateCard) updateCard(boardId, cardValues.id, cardValues);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardValues]);
 
   const calculatedPercent = calculatePercent();

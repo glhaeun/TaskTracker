@@ -3,7 +3,7 @@ import { DeleteBox, FixedContainer } from "../Modal.styles";
 import { Container, TopBox, Box } from "./FiltersModal.styles";
 
 //icon
-import { IconCross } from "@tabler/icons-react";
+import { IconX } from "@tabler/icons-react";
 
 //redux
 import { useDispatch } from "react-redux";
@@ -19,7 +19,7 @@ const FiltersModal = ({ handleFilter, handleClear, filter }) => {
           onClick={() => dispatch(toggleFiltersModal(false))}
           className="filters__close"
         >
-          <IconCross />
+          <IconX />
         </DeleteBox>
         <TopBox>
           <div className="filters__title">FILTERS</div>

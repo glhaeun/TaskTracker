@@ -12,8 +12,8 @@ const dummyJournalData = [
       createdTime: new Date("Sat Dec 10 2022 14:55:22").getTime(),
       editedTime: null,
       photo: "image_url.jpg",
-    categories: "diary",
-  },
+      categories: [{ color: "#ff5733", text: "Travel" }],
+    },
   {
     id: uuidv4(), // Replace with a valid id ID
     title: "Another Journal Entry",
@@ -25,7 +25,7 @@ const dummyJournalData = [
       createdTime: new Date("Sat Dec 10 2022 14:55:22").getTime(),
       editedTime: null,
     photo: "image_url_2.jpg",
-    categories: "diary",
+    categories: [{ color: "#ff5733", text: "Travel" }],
   },
   {
     id: uuidv4(), // Replace with a valid id ID
@@ -38,7 +38,7 @@ const dummyJournalData = [
       createdTime: new Date("Sat Dec 10 2022 14:55:22").getTime(),
       editedTime: null,
     photo: "image_url_3.jpg",
-    categories: "travel",
+    categories: [{ color: "#ff5733", text: "Travel" }],
   },
   {
     id: uuidv4(), // Replace with a valid id ID
@@ -51,7 +51,7 @@ const dummyJournalData = [
       createdTime: new Date("Sat Dec 10 2022 14:55:22").getTime(),
       editedTime: null,    
     photo: "image_url_4.jpg",
-    categories: "diary",
+    categories: [{ color: "#ff5733", text: "Travel" }],
   },
   {
     id: uuidv4(), // Replace with a valid id ID
@@ -64,7 +64,7 @@ const dummyJournalData = [
       createdTime: new Date("Sat Dec 10 2022 14:55:22").getTime(),
       editedTime: null,  
     photo: "image_url_5.jpg",
-    categories: "travel",
+    categories: [{ color: "#ff5733", text: "Travel" }],
   },
   {
     id: uuidv4(), // Replace with a valid id ID
@@ -77,7 +77,7 @@ const dummyJournalData = [
     createdTime: new Date("Sat Dec 10 2022 14:55:22").getTime(),
     editedTime: null,
     photo: "image_url_6.jpg",
-    categories: "food",
+    categories: [{ color: "#ff5733", text: "Travel" }],
   },
   {
     id: uuidv4(), // Replace with a valid id ID
@@ -90,7 +90,7 @@ const dummyJournalData = [
     createdTime: new Date("Sat Dec 10 2022 14:55:22").getTime(),
     editedTime: null,
     photo: "image_url_7.jpg",
-    categories: "diary",
+    categories: [{ color: "#ff5733", text: "Travel" }],
   },
   // You can continue to add more journal entries as needed
 ];

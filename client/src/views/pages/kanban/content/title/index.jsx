@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import ContentTitleSelector from './selector'
 import ContentTitleSwitcher from './switcher'
-import { Button } from '@mui/material'
+import { AppBar, Button, Toolbar } from '@mui/material'
 import  AddIcon  from '@mui/icons-material/Add';
 import { useSelector } from 'react-redux';
 import AddBoard from './addboard'
@@ -80,6 +80,10 @@ const Title = (props) => {
   return (
     <>
     <Wrapper>
+    <AppBar position="static" color="transparent">
+        <Toolbar sx={{display:"flex",
+        justifyContent: "space-between",
+        alignItems: "center"}}>
       <Header>
         <Username>Hi {user.name}</Username>
         <Text>Here is your tasks</Text>
@@ -89,6 +93,8 @@ const Title = (props) => {
         <ContentTitleSelector />
         <ContentTitleSwitcher />
       </Controls>
+    </Toolbar>
+    </AppBar>
     </Wrapper>
 
     <AddBoard open={showModal} onClose={handleClose} onSubmit={(value) => addBoard(value)} />

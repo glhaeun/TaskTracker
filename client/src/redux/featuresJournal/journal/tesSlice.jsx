@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import dummyJournalData from "../../ApiMockData/dummyJournal";
+import dummyJournalData from "../../../ApiMockData/dummyJournal";
 
 const initialState = {
   journalList: [...dummyJournalData]
@@ -33,8 +33,8 @@ export const tesSlice = createSlice({
     }
     ,
     removeJournal: (state, action) => {
-      state.journalList = state.journalList.filter((journal) => journal.id !== action.payload.id);
-    },
+      state.journalList = state.journalList.filter((journal) => journal.id !== action.payload);
+    }    
   },
 });
 

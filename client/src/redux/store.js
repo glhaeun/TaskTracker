@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import customReducer from './featuresCustom/customReducer';
-import journalReducer from './featuresJournal/journal/journalSlice';
+import categoryReducer from './featuresJournal/categoryList/categorySlice';
+import tesReducer from './featuresJournal/journal/tesSlice';
 import userReducer from "./featuresLogin/userSlice";
 import modalReducer from './featuresNotes/modal/modalSlice';
 import notesListReducer from './featuresNotes/notesList/notesListSlice';
 import tagsReducer from './featuresNotes/tags/tagsSlice';
-import tesReducer from './featuresJournal/tesSlice';
 
 
 
@@ -16,8 +16,8 @@ const store = configureStore({
     notesList: notesListReducer,
     modal: modalReducer,
     tags: tagsReducer, 
-    contact: journalReducer ,
-    journal: tesReducer
+    journal: tesReducer,
+    category: categoryReducer,
   },
   devTools: process.env.NODE_ENV !== 'production', // Enable Redux DevTools in development
 });

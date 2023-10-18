@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Box } from '@mui/material';
 import AllNotes from './memo';
-import TitleQuickNotes from './title';
 
 const Wrapper = styled.div`
   display: flex;
@@ -25,7 +24,6 @@ const ContentQuickNotes = () => {
   return (
     <>
       <Wrapper>
-      <TitleQuickNotes />
       <Box>
         <AllNotes></AllNotes>
       </Box>
