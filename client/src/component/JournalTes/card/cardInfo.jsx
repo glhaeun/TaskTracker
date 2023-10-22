@@ -25,9 +25,6 @@ const JournalInfo = (props) => {
     props.onJournalUpdate(journal.id);
   };
 
-  console.log(journal.content)
-
-
 
   return (
     <>

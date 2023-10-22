@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogTitle, Grid, TextField } from '@mui/material';
+import { Button, Dialog, DialogContent, DialogTitle, Grid, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -37,7 +37,7 @@ const JournalModal = ({id}) => {
             setCardValues({ categories: journalData.categories || [] }); 
         }
 
-        console.log(journalData)
+        console.log(cardValues)
     }, [journalData])
 
     const editTitle = (e) => {
@@ -75,24 +75,32 @@ const JournalModal = ({id}) => {
 
     const handleClose = () => {
         if(!id) {
-            dispatch(addJournal({title: title, caption: caption, content: value, id: uuidv4(), picture: "https://i.pinimg.com/280x280_RS/ab/a2/8e/aba28eb29f66aab5f24db128a0232f3f.jpg"  }))
+            dispatch(addJournal({title: title, caption: caption, categories:[...cardValues.categories] ,content: value, id: uuidv4(), picture: "https://i.pinimg.com/280x280_RS/ab/a2/8e/aba28eb29f66aab5f24db128a0232f3f.jpg"  }))
         }
         setOpen(false);
         navigate("/journal/all");
       };
 
 
+      const [checking, setChecking] = useState(0);
       const addCategory = (category) => {
-        // Check if the category with the same text already exists in the journal's categories
+        if(!id ) {
+          const updatedCategories = [category];
+          if(checking == 0){
+            setCardValues({categories: updatedCategories})
+          }  else {
+            setCardValues({categories:[...cardValues.categories, ...updatedCategories]})
+          }
+          setChecking(checking + 1); 
+          console.log(cardValues)// Update the checking value
+        } else {
         const index = journalData.categories.findIndex(
           (item) => item.text === category.text
         );
-      
+
         if (index === -1) {
-          // Add the new category to the journal's categories
           const updatedCategories = [...journalData.categories, category];
-      
-          // Update the journal data with the new categories
+
           const updatedJournalData = {
             ...journalData,
             categories: updatedCategories,
@@ -102,11 +110,13 @@ const JournalModal = ({id}) => {
             ...prevValues,
             categories: [...prevValues.categories, category],
           }));
-      
-          // Update the journal data in the Redux store
-          dispatch(updateJournal(updatedJournalData));
+            dispatch(updateJournal(updatedJournalData));
+
+        }
         }
       };      
+
+      console.log(checking)
     
       const removeLabel = (label) => {
         const tempLabels = cardValues.labels.filter(
@@ -119,11 +129,37 @@ const JournalModal = ({id}) => {
         });
       };
 
+
+      const [selectedImage, setSelectedImage] = useState(null);
+
+      // const handleImageUpload = (e) => {
+      //   const file = e.target.files[0];
+      //   // You can now use the 'file' object, for example, display it or upload it.
+      //   setSelectedImage(file);
+      // };
+
+      function convertToBase64(e) {
+        console.log(e)
+        var reader = new FileReader()
+        reader.readAsDataURL(e.target.files[0])
+        reader.onload = () => {
+          console.log(reader.result)
+          setSelectedImage(reader.result)
+        }
+        reader.onerror = error => {
+          console.log('Error: ', error)
+        }
+      }
+
   return (
     <>
         <Dialog open={open} onClose={handleClose} max-width="xs" fullWidth>
-            <DialogTitle>{id? "Edit Journal" : "Add Journal" }</DialogTitle>
+            <DialogTitle>{id? "Edit Journal" : "Add Journal" }
+            <input type="file" accept="image/*" onChange={convertToBase64} style={{ display: 'none' }} />
+            <Button onClick={() => document.querySelector('input[type="file"]').click()}>Add Cover</Button>
+            </DialogTitle>
             <DialogContent>
+            {selectedImage && <img src={selectedImage} alt="Selected Cover" style={{ height: '300px', width: '100%' }} />}
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <TextField 
@@ -172,7 +208,7 @@ const JournalModal = ({id}) => {
                     <Grid item xs={12}>
                     <TextEditor value={value} setValue={editContent} />
                     </Grid>
-                </Grid>
+                </Grid> 
 
                 <div className="cardinfo-box">
 

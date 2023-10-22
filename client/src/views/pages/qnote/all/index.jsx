@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 // import ErrorBoundary from './../../error';
+import ContentQuickNotes from './content';
 
-const ContentQuickNotes = React.lazy(() => import('./content'));
 
 const Wrapper = styled.div`
   display: flex;
