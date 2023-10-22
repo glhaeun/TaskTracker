@@ -154,7 +154,7 @@ const JournalModal = ({id}) => {
   return (
     <>
         <Dialog open={open} onClose={handleClose} max-width="xs" fullWidth>
-            <DialogTitle>{id? "Edit Journal" : "Add Journal" }
+            <DialogTitle style={{display:'flex', justifyContent: 'space-between', alignContent: 'center'}}>{id? "Edit Journal" : "Add Journal" }
             <input type="file" accept="image/*" onChange={convertToBase64} style={{ display: 'none' }} />
             <Button onClick={() => document.querySelector('input[type="file"]').click()}>Add Cover</Button>
             </DialogTitle>
