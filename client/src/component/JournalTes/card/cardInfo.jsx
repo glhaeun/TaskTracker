@@ -11,6 +11,10 @@ const JournalInfo = (props) => {
   const journal = props.journal;
   const content = journal.content
   const photo = journal.photo;
+  const timestamp = journal.createdTime; // Replace this with your timestamp
+  const date = new Date(timestamp);
+  const formattedDate = date.toLocaleString(); // Format as a string
+
 
   console.log(photo)
 
@@ -89,7 +93,7 @@ const JournalInfo = (props) => {
         
       <Box sx={{ padding: '20px' }}>
         <Typography variant="h2">{journal.title}</Typography>
-        <Typography variant="h4">{journal.createdTime}</Typography>
+        <Typography variant="h4">{formattedDate}</Typography>
         <Typography variant="h4">{journal.caption}</Typography>
         <Typography
           sx={{ '& img': { maxWidth: '300px' } }} // Apply the style to img elements

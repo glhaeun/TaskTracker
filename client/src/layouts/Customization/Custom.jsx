@@ -35,8 +35,6 @@ const Custom = () => {
 
   const custom = useSelector((state)=> state.custom)
 
-  //open and closing of drawer
-
   const [open, setOpen] = useState(false);
   const handleOpenDrawer = () => {
     setOpen(!open);

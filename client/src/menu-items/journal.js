@@ -2,49 +2,23 @@
 import { IconKey } from '@tabler/icons-react';
 
 // constant
-const icons = {
-  IconKey
-};
+const icons = { IconKey };
 
-// ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
 
-const journal = {
+const dashboard = {
   id: 'journal',
-  title: 'Write your memories',
-  caption: '',
+  title: 'Journal',
   type: 'group',
   children: [
     {
       id: 'journalDefault',
       title: 'Journal',
-      type: 'collapse',
-      icon: icons.IconKey,
-
-      children: [
-        {
-          id: 'journalAll',
-          title: 'All',
-          type: 'item',
-          url: '/journal/all',
-          target: true
-        },
-        {
-          id: 'journalPersonal',
-          title: 'Personal',
-          type: 'item',
-          url: '/journal/personal',
-          target: true
-        },
-        {
-          id: 'journalDaily',
-          title: 'Daily',
-          type: 'item',
-          url: '/journal/daily',
-          target: true
-        }
-      ]
+      type: 'item',
+      url: '/journal',
+      icon: icons.IconDashboard,
+      breadcrumbs: false
     }
   ]
 };
 
-export default journal;
+export default dashboard;

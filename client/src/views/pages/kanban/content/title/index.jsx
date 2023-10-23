@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import ContentTitleSelector from './selector'
 import ContentTitleSwitcher from './switcher'
-import { AppBar, Button, Toolbar } from '@mui/material'
+import { AppBar, Button, InputBase, Toolbar } from '@mui/material'
 import  AddIcon  from '@mui/icons-material/Add';
 import { useSelector } from 'react-redux';
 import AddBoard from './addboard'
 import { fetchBoardList, updateLocalStorageBoards } from '../../../../../ApiMockData/Helper/APILayer'
+import { IconSearch } from '@tabler/icons-react'
 
 
 const Wrapper = styled.div`
@@ -47,6 +48,7 @@ const Controls = styled.div`
 const Title = (props) => {
   const user = useSelector((state) => state.user.value)
   const [showModal, setShowModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // const [boards, setBoards] = useState([]);
   // useEffect(() => {
@@ -90,8 +92,6 @@ const Title = (props) => {
       </Header>
       <Controls>
         <Button sx={{marginRight:'20px'}} startIcon={<AddIcon/>} onClick={handleOpen}>Add Section</Button>
-        <ContentTitleSelector />
-        <ContentTitleSwitcher />
       </Controls>
     </Toolbar>
     </AppBar>

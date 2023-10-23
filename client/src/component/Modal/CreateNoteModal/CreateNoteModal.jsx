@@ -30,6 +30,7 @@ import {
 import TextEditor from "../../TextEditor/TextEditor";
 import TagsModal from "../TagsModal/TagsModal";
 import { IconX, IconPlus } from "@tabler/icons-react";
+import { Button } from "@mui/material";
 
 const CreateNoteModal = () => {
   const dispatch = useDispatch();
@@ -188,7 +189,7 @@ const CreateNoteModal = () => {
         </OptionsBox>
 
         <div className="createNote__create-btn">
-          <ButtonFill onClick={createNoteHandler}>
+          <Button onClick={createNoteHandler}>
             {editNote ? (
               <span>Save</span>
             ) : (
@@ -196,7 +197,7 @@ const CreateNoteModal = () => {
                 <IconPlus /> <span>Create</span>
               </>
             )}
-          </ButtonFill>
+          </Button>
         </div>
       </Box>
     </FixedContainer>

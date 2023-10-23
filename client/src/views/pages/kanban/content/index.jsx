@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ContentTitle from './title';
-// import TaskWrapper from '../../../../component/tasks/TaskWrapper';
 import { Box } from '@mui/material';
 import Board from './board';
 import { fetchBoardList, updateLocalStorageBoards } from '../../../../ApiMockData/Helper/APILayer';
@@ -23,10 +22,6 @@ const types = {
 };
 
 const Content = () => {
-
-  const backlog = 'backlog'
-  const progress = 'progress'
-  const complete = 'complete'
 
   const [boards, setBoards] = useState([]);
   useEffect(() => {
@@ -155,6 +150,14 @@ const Content = () => {
     updateLocalStorageBoards(boards);
   }, [boards]);
 
+  const handleDrop = (e, boardId, cardId) => {
+    e.preventDefault();
+    onDragEnd(boardId, cardId);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
   return (
     <>
       <Wrapper>
@@ -167,7 +170,10 @@ const Content = () => {
         gridTemplateRows: 'none',
         gridColumnGap: '20px',
         gridRowGap: '20px'
-      }}>
+      }}
+      onDrop={(e) => handleDrop(e, 0, 0)}
+      onDragOver={handleDragOver}
+      >
         {boards.map((item) => (
             <Board
               key={item.id}

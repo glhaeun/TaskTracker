@@ -60,7 +60,8 @@ const TagsModal = ({ type, addedTags, handleTags }) => {
   };
 
   return (
-    <Dialog open={true} onClose={() => dispatch(toggleTagsModal({ type, view: false }))}>
+    <Dialog open={true} onClose={() => dispatch(toggleTagsModal({ type, view: false }))}   style={{ zIndex: 3000 }} // Add this style
+    >
       <DialogTitle className={classes.dialogTitle}>
         <div className="editTags__title">{type === "add" ? "Add" : "Edit"} Tags</div>
       </DialogTitle>

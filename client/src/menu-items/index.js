@@ -6,7 +6,7 @@ import todo from './todo';
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-  items: [dashboard,todo, journal, qnotes ]
+  items: [todo, journal, qnotes ]
 };
 
 export default menuItems;

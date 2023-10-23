@@ -24,6 +24,12 @@ const HomePage = () => {
   const getJournalList = useSelector((state) => state.journal.journalList);
   const [searchTerm, setSearchTerm] = useState("");
   const [journalListData, setJournalListData] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(""); // State to store the selected category
+
+
+  const categories = Array.from(new Set(getJournalList.flatMap((entry) => entry.categories)));
+  const uniqueCategories = [...new Set(categories)];
+  const uniqueCategoriesText = [...new Set(uniqueCategories.map(category => category.text))];
 
   useEffect(() => {
     setJournalListData(getJournalList);
@@ -37,6 +43,35 @@ const HomePage = () => {
     setOpen((current) => !current);
   };
 
+  const handleCategoryChange = (e) => {
+    const selectedValue = e.target.value.toLowerCase(); // Convert to lowercase
+    console.log(selectedValue);
+    setSelectedCategory(e.target.value); // Update the selected category
+    setSearchTerm(""); // Clear the search term when a category is selected
+  
+    if (selectedValue === "all") {
+      setJournalListData(getJournalList); // Set the list to the original data
+    } else {
+      filterJournalData(selectedValue); // Trigger the filter with the selected category
+    }
+  };
+  
+
+
+  const filterJournalData = (input) => {
+    console.log(input)
+    const filteredData = getJournalList.filter((item) => {
+      if (item.categories) {
+        return item.categories.some(category => category.text.toLowerCase().includes(input));
+      }
+    console.log(item.categories)
+      return false; // Filter out items without categories
+    });
+  
+    setJournalListData(filteredData);
+  }
+  
+
   return (
     <Wrapper>
     <div className="flex flex-col w-screen h-screen overflow-auto text-gray-700 bg-gradient-to-tr from-green-200 via-indigo-200 to-pink-200">
@@ -49,6 +84,14 @@ const HomePage = () => {
           onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
           startAdornment={<IconSearch />}
         />
+          <select value={selectedCategory} onChange={handleCategoryChange}>
+              <option value="All">All Categories</option>
+              {uniqueCategoriesText.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
           <Button
             variant="contained"
             color="primary"
@@ -62,8 +105,8 @@ const HomePage = () => {
         </Toolbar>
       </AppBar>
       <Box p={4}>
-        <JournalList journal={journalListData} />
-      </Box>
+          <JournalList journal={journalListData} />
+        </Box>
       {open && (
         <DialogBox open={open} OnDialogHandle={dialogHandle}>
           <JournalModal id={""} />

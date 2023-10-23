@@ -87,7 +87,7 @@ const Selector = () => {
         <Sort>
             <ShowWrapper>
             <Show>Show:</Show>
-                <What>Hi</What>
+            <What>Hi</What>
             </ShowWrapper>
             <ArrowWrapper onClick={handleOpenedSimple}>
                 {opened ? <ArrowDown /> : <ArrowUp />}

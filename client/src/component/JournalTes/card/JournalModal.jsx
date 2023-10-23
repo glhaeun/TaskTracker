@@ -1,4 +1,4 @@
-import { Select, Button, Dialog, DialogContent, DialogTitle, Grid, TextField, MenuItem } from '@mui/material';
+import { Button, Dialog, DialogContent, DialogTitle, Grid, TextField, MenuItem } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -10,8 +10,6 @@ import CustomInput from '../../../ApiMockData/CustomInput';
 import { colorsList } from "../../../utils/Util";
 import "./style.css";
 import { v4 as uuidv4 } from "uuid";
-import categoryModal from './categoryModal';
-import CategoryModal from './categoryModal';
 
 
 const JournalModal = ({id}) => {
@@ -82,7 +80,7 @@ const JournalModal = ({id}) => {
             dispatch(addJournal({title: title, caption: caption, categories:[...cardValues.categories] ,content: value, id: uuidv4(), picture: "https://i.pinimg.com/280x280_RS/ab/a2/8e/aba28eb29f66aab5f24db128a0232f3f.jpg"  }))
         }
         setOpen(false);
-        navigate("/journal/all");
+        navigate("/journal");
       };
 
       const [checking, setChecking] = useState(0);
@@ -121,19 +119,25 @@ const JournalModal = ({id}) => {
 
     
       const removeLabel = (label) => {
-        const tempLabels = cardValues.labels.filter(
+        const tempLabels = cardValues.categories.filter(
           (item) => item.text !== label.text
         );
+        console.log(tempLabels)
     
+        const updatedJournalData = {
+          ...journalData,
+          categories: tempLabels,
+        };
+
         setCardValues({
           ...cardValues,
-          labels: tempLabels,
+          categories: tempLabels,
         });
+        dispatch(updateJournal(updatedJournalData));
       };
 
 
       const [selectedImage, setSelectedImage] = useState(null);
-      const [selectedCategory, setSelectedCategory] = useState('personal'); // Initialize selected category
 
       function convertToBase64(e) {
         console.log(e)
@@ -239,25 +243,7 @@ const JournalModal = ({id}) => {
                 />
                 </div>
 
-                
-          <div className="category-dropdown">
-            <label>Category:</label>
-            <Select
-              value={selectedCategory}
-              onChange={(e) => {
-                if (e.target.value === 'add') {
-                  setOpenCategoryModal(true);
-                } else {
-                  setSelectedCategory(e.target.value);
-                }
-              }}
-            >
-              <MenuItem value="personal">Personal</MenuItem>
-              <MenuItem value="work">Work</MenuItem>
-              <MenuItem value="school">School</MenuItem>
-              <MenuItem value="add">Add Category</MenuItem>
-            </Select>
-          </div>
+              
         </DialogContent>
       </Dialog>
 

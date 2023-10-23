@@ -1,17 +1,19 @@
 import styled from "styled-components";
 
 export const Box = styled.div`
-  margin-top: 70px;
-  width: clamp(250px, 95%, 750px);
+  margin-top: 30px;
+  width: clamp(250px, 95%, 500px);
   background-color: white;
   color: black;
   border-radius: 10px;
   padding: 20px 18px 25px;
-  height: 470px;
+  height: 520px;
   .createNote__create-btn {
     display: flex;
     justify-content: flex-end;
+    margin-top: 30px;
   }
+  pointer-events: auto; /* This allows interaction with modal content */
 `;
 
 export const TopBox = styled.div`
@@ -24,8 +26,8 @@ export const TopBox = styled.div`
   }
   .createNote__close-btn {
     svg {
-      font-size: 1.6rem;
-    }
+      font-size: 1.6rem;    }
+   
   }
 `;
 
@@ -42,7 +44,7 @@ export const StyledInput = styled.input`
 `;
 
 export const AddedTagsBox = styled.div`
-  margin: 12px 0 0px;
+  margin: 12px 0 12px;
   display: flex;
 
   div {

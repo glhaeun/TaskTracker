@@ -2,17 +2,17 @@ import styled from "styled-components";
 
 export const FixedContainer = styled.div`
   position: fixed;
-  top: 0px;
-  right: 0px;
-  z-index: 5;
-  width: 80%;
-  height: 100vh;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000; /* Adjust the z-index as needed */
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.4); /* Semi-transparent background */ /* Apply backdrop filter for blur effect */
 `;
+
 
 export const DeleteBox = styled.div`
   width: 35px;

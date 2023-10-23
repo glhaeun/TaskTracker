@@ -19,6 +19,7 @@ function Board(props) {
     updateCard,
   } = props;
   const [showDropdown, setShowDropdown] = useState(false);
+
   return (
     <MainCard className="board" key={board?.id} sx={{
       width: '280px'
@@ -30,15 +31,18 @@ function Board(props) {
           </p>
           <div
             className="board-header-title-more"
-            onClick={() => setShowDropdown(true)}
+            onClick={(event) => {
+              event.stopPropagation();
+              setShowDropdown(!showDropdown);
+            }}
           >
             <MoreHorizontal />
             {showDropdown && (
               <Menu
-                class="board-dropdown"
+                className="board-dropdown"
                 onClose={() => setShowDropdown(false)}
               >
-                <p onClick={() => removeBoard(board?.id)}>Delete Card</p>
+                <p onClick={() => removeBoard(board?.id)}>Delete</p>
               </Menu>
             )}
           </div>
