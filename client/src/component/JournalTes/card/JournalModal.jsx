@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogContent, DialogTitle, Grid, TextField } from '@mui/material';
+import { Select, Button, Dialog, DialogContent, DialogTitle, Grid, TextField, MenuItem } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,8 @@ import CustomInput from '../../../ApiMockData/CustomInput';
 import { colorsList } from "../../../utils/Util";
 import "./style.css";
 import { v4 as uuidv4 } from "uuid";
+import categoryModal from './categoryModal';
+import CategoryModal from './categoryModal';
 
 
 const JournalModal = ({id}) => {
@@ -19,6 +21,7 @@ const JournalModal = ({id}) => {
     const [value, setValue] = useState('');
     const [selectedColor, setSelectedColor] = useState("");
     const [cardValues, setCardValues] = useState({ categories: [] }); // Initialize categories as an empty array
+    const [openCategoryModal, setOpenCategoryModal] = useState(false); // State for the category modal
 
 
     const navigate = useNavigate()
@@ -33,6 +36,7 @@ const JournalModal = ({id}) => {
             setTitle(journalData.title)
             setCaption(journalData.caption)
             setValue(journalData.content)
+            setSelectedImage(journalData.photo)
             setCardValues([journalData])
             setCardValues({ categories: journalData.categories || [] }); 
         }
@@ -81,7 +85,6 @@ const JournalModal = ({id}) => {
         navigate("/journal/all");
       };
 
-
       const [checking, setChecking] = useState(0);
       const addCategory = (category) => {
         if(!id ) {
@@ -116,7 +119,6 @@ const JournalModal = ({id}) => {
         }
       };      
 
-      console.log(checking)
     
       const removeLabel = (label) => {
         const tempLabels = cardValues.labels.filter(
@@ -131,12 +133,7 @@ const JournalModal = ({id}) => {
 
 
       const [selectedImage, setSelectedImage] = useState(null);
-
-      // const handleImageUpload = (e) => {
-      //   const file = e.target.files[0];
-      //   // You can now use the 'file' object, for example, display it or upload it.
-      //   setSelectedImage(file);
-      // };
+      const [selectedCategory, setSelectedCategory] = useState('personal'); // Initialize selected category
 
       function convertToBase64(e) {
         console.log(e)
@@ -145,7 +142,9 @@ const JournalModal = ({id}) => {
         reader.onload = () => {
           console.log(reader.result)
           setSelectedImage(reader.result)
-        }
+          dispatch(updateJournal({ ...journalData, photo: reader.result }));
+      }        
+
         reader.onerror = error => {
           console.log('Error: ', error)
         }
@@ -156,7 +155,7 @@ const JournalModal = ({id}) => {
         <Dialog open={open} onClose={handleClose} max-width="xs" fullWidth>
             <DialogTitle style={{display:'flex', justifyContent: 'space-between', alignContent: 'center'}}>{id? "Edit Journal" : "Add Journal" }
             <input type="file" accept="image/*" onChange={convertToBase64} style={{ display: 'none' }} />
-            <Button onClick={() => document.querySelector('input[type="file"]').click()}>Add Cover</Button>
+            <Button onClick={() => document.querySelector('input[type="file"]').click()}>{id? "Edit Cover" : "Add Cover" }</Button>
             </DialogTitle>
             <DialogContent>
             {selectedImage && <img src={selectedImage} alt="Selected Cover" style={{ height: '300px', width: '100%' }} />}
@@ -239,9 +238,33 @@ const JournalModal = ({id}) => {
                     }
                 />
                 </div>
+
                 
-            </DialogContent>
-        </Dialog>
+          <div className="category-dropdown">
+            <label>Category:</label>
+            <Select
+              value={selectedCategory}
+              onChange={(e) => {
+                if (e.target.value === 'add') {
+                  setOpenCategoryModal(true);
+                } else {
+                  setSelectedCategory(e.target.value);
+                }
+              }}
+            >
+              <MenuItem value="personal">Personal</MenuItem>
+              <MenuItem value="work">Work</MenuItem>
+              <MenuItem value="school">School</MenuItem>
+              <MenuItem value="add">Add Category</MenuItem>
+            </Select>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {openCategoryModal && (
+      <CategoryModal open={openCategoryModal} onClose={() => setOpenCategoryModal(false)} />
+      )}
+
     </>
   )
 }

@@ -2,7 +2,7 @@ const User = require('../models/user')
 
 const CryptoJS = require('crypto-js')
 const jsonwebtoken = require('jsonwebtoken')
-
+const UserPassword = require('../models/userPassword')
 const UserVerification = require('../models/userVerification')
 const nodemailer = require('nodemailer')
 const {v4: uuid4} = require('uuid')
@@ -63,6 +63,59 @@ const sendEmail = ({_id, username}, res) => {
         res.json({
           status: "failed",
           message: "Failed to send email verification!"
+        })
+      })
+    }).catch((error) => {
+      console.log(error)
+      res.json({
+        status: "failed",
+        message: "Couldn't save!"
+      })
+    })
+  }).catch(()=>{
+    res.json({
+      status: "failed",
+      message: "Error occured!"
+    })
+  })  
+}
+
+const sendEmailChangePassword = ({_id, username}, res) => {
+  const currentUrl = "http://127.0.0.1:3000/"
+
+  const uniqueString = uuid4() + _id
+  const userId = _id
+
+  const mailOptions = {
+    from: process.env.AUTH_EMAIL,
+    to: username,
+    subject: "Change Your Password",
+    html: `<p>Change Password.</p>
+    <p>This link <b>expires in 6 hours</b>.</p><p>Press <a href=${currentUrl +"change-password/"+ userId+ "/" +uniqueString}>here</a>
+    to proceed.</p>`
+  }
+
+  const saltRounds = 10
+  bcrypt.hash(uniqueString,saltRounds).then((hashedUniqueString) =>{
+    
+    const newVerification = new UserPassword({
+      userId: _id,
+      uniqueString: hashedUniqueString,
+      createdAt: Date.now(),
+      expiresAt: Date.now() + 21600000
+    })
+
+    newVerification.save().then(()=>{
+      transporter.sendMail(mailOptions).then(()=>{
+        res.json({
+          status: "Pending",
+          message: "Change email has been sent!"
+        })
+      }).catch((error) => {
+        console.log(error)
+        res.json({
+          status: "failed",
+          message: "Failed to send email!"
         })
       })
     }).catch((error) => {
@@ -172,3 +225,75 @@ exports.login = async (req, res) => {
     res.status(500).json(err);
   }
 };
+
+exports.forgotPassword = async (req, res) => {
+  const { username } = req.body;
+  console.log(username)
+  try {
+    console.log("here2")
+    const user = await User.findOne({ username }).select('username isVerified');
+
+    if (!user) {
+      console.log("here3")
+      return res.status(401).json({
+        errors: [
+          {
+            param: 'username',
+            msg: 'Email/Username is not registered!'
+          }
+        ]
+      });
+
+    }
+
+    if (!user.isVerified) {
+      console.log("here2")
+      return res.status(401).json({
+        errors: [
+          {
+            param: 'username',
+            msg: 'Account not verified. Please verify your email before resetting password.'
+          }
+        ]
+      });
+    }
+
+    sendEmailChangePassword(user, res, (emailSent) => {
+      if (emailSent) {
+        // Email sent successfully, send a 200 response
+        res.status(200).json(user);
+      } else {
+        // Handle the case where email sending failed
+        res.status(500).json({ message: 'Failed to send email' });
+      }
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+  // console.log("hi")
+};
+
+exports.changePassword = async (id, req, res)  => {
+  const{ password } = req.body
+  console.log(password)
+  console.log(id)
+  try {
+    
+    const encryptedPassword = req.body.password = CryptoJS.AES.encrypt(
+      password,
+      process.env.PASSWORD_SECRET_KEY
+    ).toString();
+
+    console.log(encryptedPassword)
+
+    const updatePassword = await User.findByIdAndUpdate(
+      id,
+      { password: encryptedPassword } 
+    )
+    
+    res.status(200).json(updatePassword)
+    console.log("hereA")
+    } catch(err) {
+      res.status(500).json(err)
+    }
+}

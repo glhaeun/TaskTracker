@@ -5,7 +5,7 @@ export const FixedContainer = styled.div`
   top: 0px;
   right: 0px;
   z-index: 5;
-  width: 100%;
+  width: 80%;
   height: 100vh;
   display: flex;
   align-items: center;

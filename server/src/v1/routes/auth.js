@@ -5,20 +5,13 @@ const validation = require('../handlers/validation')
 const tokenHandler = require('../handlers/tokenHandler')
 const User = require('../models/user')
 const userVerification = require('../models/userVerification')
+const userPassword = require('../models/userPassword')
+
 const path = require("path")
 const bcrypt = require("bcrypt")
 
 router.post(
   '/register',
-  body('name').isLength({ min: 8 }).withMessage(
-    'name must be at least 8 characters'
-  ),
-  body('username').isLength({ min: 8 }).withMessage(
-    'email must be at least 8 characters'
-  ),
-  body('password').isLength({ min: 8 }).withMessage(
-    'password must be at least 8 characters'
-  ),
   body('username').custom(value => {
     return User.findOne({ username: value }).then(user => {
       if (user) {
@@ -56,6 +49,7 @@ router.get('/verify/:userId/:uniqueString', (req,res) =>{
   let { userId, uniqueString} = req.params;
   userVerification.find({userId})
   .then((result) => {
+    console.log(result)
     if (result.length>0) {
       const {expiresAt} = result[0]
       const hashedUniqueString = result[0].uniqueString
@@ -129,8 +123,83 @@ router.get('/verify/:userId/:uniqueString', (req,res) =>{
   })
 })
 
+router.post(
+  '/forgot-password',
+  validation.validate,
+  userController.forgotPassword
+)
+
+router.get('/change-password/:userId/:uniqueString', async (req,res) =>{
+  console.log('req.params:', req.params); 
+  console.log('req.url:', req.url);
+
+  let { userId, uniqueString} = req.params;
+  userPassword.find({userId})
+  .then((result) => {
+    console.log(result)
+    if (result.length>0){
+      const {expiresAt} = result[0]
+      const hashedUniqueString = result[0].uniqueString
+
+      if(expiresAt<Date.now()) {
+        userPassword.deleteOne({userId})
+        .then(() => {
+          userPassword.deleteOne({_id: userId})
+          .then(() => {
+            console.log("link has expired")
+            return res.json({status: "link has expired"})
+          }) 
+          .catch(() => {
+            console.log("Clearing user with expired unique string failed")
+            return res.json({status: "Clearing user with expired unique string failed"})
+          })
+        }
+      )} else {
+        bcrypt.compare(uniqueString, hashedUniqueString)
+        .then(result => {
+          if(result){
+            userPassword.deleteOne({userId})
+            .then(()=> {
+              const redirectUrl = `/change-password/${req.params.userId}/${req.params.uniqueString}`;
+              res.json({ redirectUrl, status: 'success' });
+            }).catch(error=> {
+              let message = "An error occured while finalizing successful verification"
+              console.log(message)
+              return res.json({status: message})
+            })  
+          } else {
+            let message = "Invalid details passed. Check your inbox"
+            console.log(message)
+            return res.json({status: message})
+
+          }
+        })
+      }  
+    }  else {
+      console.log("testing")
+      return res.json({ status: 'error', message: 'No matching entry found' });
+    }
+  }).catch((error) => {
+    let message = "An error occured while checking verification"
+    console.log(message)
+    return res.json({status: message})
+  })
+  }
+  
+)
+
 router.get("/verified", (req, res) => {
   res.sendFile(path.join(__dirname, "../views/verification.html"))
 })
 
+router.post(
+  '/change-password/:id'
+  , (req, res) => {
+    validation.validate    
+    const { id } = req.params;
+    console.log("router")
+    console.log(id)
+    userController.changePassword(id, req, res);
+  });
+  
 module.exports = router

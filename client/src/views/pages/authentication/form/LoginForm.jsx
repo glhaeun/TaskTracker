@@ -145,7 +145,7 @@ const LoginForm = ({ ...others }) => {
               )}
             </FormControl>
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={1}>
-              <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
+              <Typography component={Link} to="/forgot-password" variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
                 Forgot Password?
               </Typography>
             </Stack>
@@ -157,7 +157,7 @@ const LoginForm = ({ ...others }) => {
 
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
-                <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="dark">
+                <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="light  ">
                   Sign in
                 </Button>
               </AnimateButton>

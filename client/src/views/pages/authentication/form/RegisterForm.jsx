@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import authApi from '../../../../api/authApi';
 
@@ -35,6 +35,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const RegisterForm = ({ ...others }) => {
   const theme = useTheme();
+  const navigate = useNavigate()
   const scriptedRef = useScriptRef();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   const [showPassword, setShowPassword] = useState(false);
@@ -72,7 +73,7 @@ const RegisterForm = ({ ...others }) => {
       console.log(res)
       setStatus({ success: true });
       setSubmitting(false);
-      // navigate('/')
+      navigate('/')
     } catch (err) {
       if (err.data && err.data.errors) {
         const errors = err.data.errors;

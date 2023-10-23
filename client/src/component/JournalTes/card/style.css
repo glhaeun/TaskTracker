@@ -57,7 +57,7 @@
   .cardinfo-box ul {
     display: flex;
     gap: 15px;
-    margin-left: 20px;
+    padding: 5px;
   }
   .cardinfo-box ul li {
     list-style: none;

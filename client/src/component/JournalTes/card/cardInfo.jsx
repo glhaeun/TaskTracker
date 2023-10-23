@@ -1,4 +1,4 @@
-import { Button, Drawer, Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { Box, Button, Drawer, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import { Icon123, IconCircleMinus, IconEdit, IconQuotes, IconCalendar } from "@tabler/icons-react";
 import React, { useState } from "react";
 import { useDispatch } from 'react-redux';
@@ -10,11 +10,16 @@ const JournalInfo = (props) => {
   const dispatch = useDispatch();
   const journal = props.journal;
   const content = journal.content
+  const photo = journal.photo;
+
+  console.log(photo)
 
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [image, setImage] = useState(null);
 
   const handleOpenDrawer = () => {
     setOpenDrawer(true);
+    setImage(photo);
   };
 
   const handleCloseDrawer = () => {
@@ -34,7 +39,7 @@ const JournalInfo = (props) => {
 
     <CardMedia
         sx={{ height: 140 }}
-        image={journal.photo !== undefined? journal.photo.toString(): "https://i.pinimg.com/280x280_RS/ab/a2/8e/aba28eb29f66aab5f24db128a0232f3f.jpg" }
+        image={photo !== undefined? photo : "https://i.pinimg.com/280x280_RS/ab/a2/8e/aba28eb29f66aab5f24db128a0232f3f.jpg" }
         title="Journal Cover"
         onClick={handleOpenDrawer } // Open the modal when the card is clicked
         style={{ cursor: "pointer" }}
@@ -79,11 +84,20 @@ const JournalInfo = (props) => {
       </CardContent>
     </Card>
 
-    <Drawer anchor="right" open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { width: 500 } }}>
-        {/* Drawer content */}
+    <Drawer anchor="right" open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { width: 500} }}>
+      {image && <img src={image} alt="Selected Cover" style={{ height: '300px', width: '100%' }} />}
+        
+      <Box sx={{ padding: '20px' }}>
         <Typography variant="h2">{journal.title}</Typography>
+        <Typography variant="h4">{journal.createdTime}</Typography>
         <Typography variant="h4">{journal.caption}</Typography>
-        <Typography dangerouslySetInnerHTML={{ __html: journal.content }} />
+        <Typography
+          sx={{ '& img': { maxWidth: '300px' } }} // Apply the style to img elements
+          dangerouslySetInnerHTML={{ __html: journal.content }}
+        />
+      </Box>
+
+        
 
         <Button onClick={handleCloseDrawer}>Close</Button>
     </Drawer>
