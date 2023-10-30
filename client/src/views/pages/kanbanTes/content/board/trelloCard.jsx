@@ -50,7 +50,7 @@ function TrelloCard(props) {
             <MoreHorizontal />
             {showDropdown && (
               <Menu
-                class="card-dropdown"
+                class="board-dropdown"
                 onClose={() => setShowDropdown(false)}
               >
                 <p onClick={() => removeCard(boardId, id)}>Delete Card</p>

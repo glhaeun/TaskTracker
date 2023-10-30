@@ -14,6 +14,7 @@ import AuthCardWrapper from './styling/CardWrapper';
 import AuthLogin from './form/ResetPasswordForm';
 import Logo from '../../../component/Logo';
 import AuthFooter from '../../../component/cards/AuthFooter';
+import Fail from './Fail';
 
 
 
@@ -22,6 +23,7 @@ const ChangePassword = () => {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState([])
 
   useEffect(() => {
     authApi.getUserForChangePassword(id, uniqueString)
@@ -30,12 +32,14 @@ const ChangePassword = () => {
         console.log(data)
         if (data.status !== 'success' || data.status == undefined) {
           setError(true); 
+          setErrorMessage(data)
         }
         setLoading(false);
       })
       .catch((error) => {
         console.log("hi")
         console.error('Error:', error);
+        setErrorMessage(data)
         setError(true); // Set error state to true
         setLoading(false);
       });
@@ -54,7 +58,7 @@ const ChangePassword = () => {
             {loading ? ( // Display a loading indicator
             <Loading></Loading>
           ) : error ? ( // Display an error message
-            <Typography>Error: Something went wrong</Typography>
+           <Fail error={errorMessage}></Fail>
           ) : ( // Display your "Change Password" content
             <AuthCardWrapper>
             <Grid container spacing={2} alignItems="center" justifyContent="center">

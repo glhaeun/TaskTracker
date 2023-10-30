@@ -10,8 +10,10 @@ import {
 } from "../views/pages/qnote/index";
 
 
+const ToDo2 = Loadable(lazy(()=> import('../views/pages/finalTodo')))
 
-const ToDo = Loadable(lazy(()=> import('../views/pages/kanban')))
+const ToDo = Loadable(lazy(()=> import('../views/pages/kanbanTes')))
+const Main = Loadable(lazy(()=> import('../views/pages/todo/main')))
 const Journal = Loadable(lazy(()=> import('../views/pages/journalTes')))
 
 
@@ -22,7 +24,7 @@ const AppRoutes = {
     children: [
       {
         path: '/',
-        element: <PrivateRoute element={<ToDo />} />
+        element: <PrivateRoute element={<ToDo2 />} />
       },
       {
         path: 'todo',

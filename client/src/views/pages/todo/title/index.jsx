@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import ContentTitleSelector from './selector'
-import ContentTitleSwitcher from './switcher'
 import { AppBar, Button, InputBase, Toolbar } from '@mui/material'
 import  AddIcon  from '@mui/icons-material/Add';
 import { useSelector } from 'react-redux';
 import AddBoard from './addboard'
-import { fetchBoardList, updateLocalStorageBoards } from '../../../../../ApiMockData/Helper/APILayer'
 import { IconSearch } from '@tabler/icons-react'
 
 
@@ -50,16 +47,11 @@ const Title = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const getBoardList = useSelector((state) => state.board.boardList);
   const [boards, setBoards] = useState([]);
   useEffect(() => {
-    fetchData();
+    setBoards(getBoardList)
   }, []);
-
-  async function fetchData() {
-    const boardsData = await fetchBoardList();
-    setBoards(boardsData);
-    console.log(boardsData)
-  }
 
   const {addBoard} = props;
 

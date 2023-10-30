@@ -1,4 +1,3 @@
-// const ApiMockResponse = require('../dummyData'); // Make sure to provide the correct path
 const LocalStorageKeyName = 'kanban-boards';
 
 const ApiMockResponse = [

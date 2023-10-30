@@ -92,11 +92,18 @@ const JournalInfo = (props) => {
       {image && <img src={image} alt="Selected Cover" style={{ height: '300px', width: '100%' }} />}
         
       <Box sx={{ padding: '20px' }}>
-        <Typography variant="h2">{journal.title}</Typography>
-        <Typography variant="h4">{formattedDate}</Typography>
-        <Typography variant="h4">{journal.caption}</Typography>
+        <Typography variant="h1">{journal.title}</Typography>
+        <Typography variant="h4">Date: {formattedDate}</Typography>
+        <Typography variant="h4"
+         sx= {{marginTop: '10px'}}
+        >{journal.caption}</Typography>
+        {journal.categories?.map((item, index) => (
+            <Chip key={index} item={item}  />
+            ))}
         <Typography
-          sx={{ '& img': { maxWidth: '300px' } }} // Apply the style to img elements
+          sx={{ 
+            marginTop:'20px',
+            '& img': { maxWidth: '300px' } }} // Apply the style to img elements
           dangerouslySetInnerHTML={{ __html: journal.content }}
         />
       </Box>

@@ -6,7 +6,8 @@ import userReducer from "./featuresLogin/userSlice";
 import modalReducer from './featuresNotes/modal/modalSlice';
 import notesListReducer from './featuresNotes/notesList/notesListSlice';
 import tagsReducer from './featuresNotes/tags/tagsSlice';
-
+import kanbanReducer from './featuresKanban/kanbanSlice';
+import boardReducer from './featuresKanban2/boardSlice';
 
 
 const store = configureStore({
@@ -18,6 +19,8 @@ const store = configureStore({
     tags: tagsReducer, 
     journal: tesReducer,
     category: categoryReducer,
+    board: kanbanReducer,
+    boards: boardReducer
   },
   devTools: process.env.NODE_ENV !== 'production', // Enable Redux DevTools in development
 });

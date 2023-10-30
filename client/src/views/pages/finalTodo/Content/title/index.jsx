@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import AddBoard from './addboard'
 import { fetchBoardList, updateLocalStorageBoards } from '../../../../../ApiMockData/Helper/APILayer'
 import { IconSearch } from '@tabler/icons-react'
+import boardApi from '../../../../../api/boardApi'
 
 
 const Wrapper = styled.div`
@@ -63,6 +64,15 @@ const Title = (props) => {
 
   const {addBoard} = props;
 
+  const addBoardDatabase = async (boardName, selectedColor) => {
+    try {
+      const newBoard = await boardApi.create({boardName: boardName, color: selectedColor})
+      addBoard(newBoard)
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
   const handleOpen = () => {
     setShowModal(true);
   };
@@ -71,9 +81,9 @@ const Title = (props) => {
     setShowModal(false);
   };
 
-  const filteredBoards = boards.filter((board) =>
-    board.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredBoards = boards.filter((board) =>
+  //   board.title.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
 
   return (
     <>
@@ -98,7 +108,7 @@ const Title = (props) => {
     </AppBar>
     </Wrapper>
 
-    <AddBoard open={showModal} onClose={handleClose} onSubmit={(value) => addBoard(value)} />
+    <AddBoard open={showModal} onClose={handleClose} onSubmit={(boardName, selectedColor) => addBoardDatabase(boardName, selectedColor)} />
 
     </>
   )

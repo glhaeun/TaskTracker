@@ -1,4 +1,4 @@
-export const ApiMockResponse = [
+ const ApiMockResponse = [
   {
     id: 1651319512266.7095,
     title: "Discover",
@@ -12,11 +12,35 @@ export const ApiMockResponse = [
           { id: 1651319625559.8025, completed: true, text: "Task1_subtask1" },
           { id: 1651319629650.8945, completed: true, text: "Task1_subtask2" },
           { id: 1651319633774.9905, completed: true, text: "Task1_subtask3" },
+          { id: 1651319633774.9908, completed: true, text: "Task2_subtask3" },
+          { id: 1651319633774.99010, completed: true, text: "Task3_subtask3" },
         ],
+
         desc: "Task1 Detail Description",
       },
       {
         id: 1651319568365.593,
+        title: "Task2",
+        labels: [{ color: "#1ebffa", text: "Frontend" }],
+        date: "",
+        tasks: [],
+      },
+      {
+        id: 1651319568365.59,
+        title: "Task2",
+        labels: [{ color: "#1ebffa", text: "Frontend" }],
+        date: "",
+        tasks: [],
+      },
+      {
+        id: 1651319568365.590,
+        title: "Task2",
+        labels: [{ color: "#1ebffa", text: "Frontend" }],
+        date: "",
+        tasks: [],
+      },
+      {
+        id: 1651319568365.599,
         title: "Task2",
         labels: [{ color: "#1ebffa", text: "Frontend" }],
         date: "",
@@ -69,3 +93,5 @@ export const ApiMockResponse = [
     ],
   },
 ];
+
+export default ApiMockResponse;
