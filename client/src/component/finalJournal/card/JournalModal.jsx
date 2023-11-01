@@ -13,144 +13,164 @@ import { v4 as uuidv4 } from "uuid";
 import journalApi from '../../../api/journalApi';
 
 
-const JournalModal = ({id}) => {
+
+const JournalModal = ({id, addJournal, journalUpdate}) => {
     const [open, setOpen] = useState(true);
     const [title, setTitle] = useState('Untitled')
     const [caption, setCaption] = useState('Set your caption here')
     const [value, setValue] = useState('');
     const [selectedColor, setSelectedColor] = useState("");
-    const [cardValues, setCardValues] = useState({ categories: [] }); // Initialize categories as an empty array
-    const [openCategoryModal, setOpenCategoryModal] = useState(false); // State for the category modal
-
+    const [cardValues, setCardValues] = useState([]); 
+    const [journalData, setJournalData] = useState([])
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    const journalData = useSelector((state)=>
-    state.journal.journalList.find((journal)=> journal.id === id));
+    // const journalData = useSelector((state)=>
+    // state.journal.journalList.find((journal)=> journal.id === id));
     const journalList = useSelector((state) => state.journal.journalList);
 
-    useEffect(() => {
-        if (journalData) {
-            setTitle(journalData.title)
-            setCaption(journalData.caption)
-            setValue(journalData.content)
-            setSelectedImage(journalData.photo)
-            setCardValues([journalData])
-            setCardValues({ categories: journalData.categories || [] }); 
-        }
+    // useEffect(() => {
+    //     if (journalData) {
+    //         setTitle(journalData.title)
+    //         setCaption(journalData.caption)
+    //         setValue(journalData.content)
+    //         setSelectedImage(journalData.photo)
+    //         setCardValues([journalData])
+    //         setCardValues({ categories: journalData.categories || [] }); 
+    //     }
 
-        console.log(cardValues)
-    }, [journalData])
+    //     console.log(cardValues)
+    // }, [journalData])
+
+    useEffect( () => {
+      if(id) {
+        const fetchJournalData = async () => {
+          try {
+            const journalData2 = await journalApi.getOne(id); 
+            setJournalData(journalData2)
+            setTitle(journalData2.title)
+            setCaption(journalData2.caption)
+            setSelectedImage(journalData.photo)
+            setValue(journalData2.value)
+            setCardValues(journalData2.category || []); // Initialize with categories from journalData2
+          } catch (error) {
+            console.error("Error fetching board data: ", error);
+          }
+        };
+        fetchJournalData();
+      }
+  }, [id, journalUpdate])
+
 
     const editTitle = (e) => {
         const newTitle = e.target.value;
-      
-        if (journalData) {
-            const updatedJournalList = journalList.map((journal) =>
-              journal.id === journalData.id ? { ...journal, title: newTitle } : journal
-            );
-            dispatch(updateJournal({ ...journalData, title: newTitle }));
-          } 
+        if(id) {
+          journalUpdate(id, { ...journalData, title: newTitle })
+        }
         setTitle(newTitle);
-      };
+    };
       
 
     const editCaption = (event) => {
         const newCaption= event.target.value;
-        if (journalData) {
-            const updatedJournalList = journalList.map((journal) =>
-              journal.id === journalData.id ? { ...journal, caption: newCaption } : journal
-            );
-            dispatch(updateJournal({ ...journalData, caption: newCaption }));
-          }
+        if(id) {
+          journalUpdate(id, { ...journalData, caption: newCaption })
+        }
         setCaption(newCaption)
     }
 
     const editContent = (newValue) => {
         setValue(newValue); // Update the state with the new content
-        if (journalData) {
-            dispatch(updateJournal({ ...journalData, content: newValue }));
-          }
+        if(id) {
+          journalUpdate(id, { ...journalData, content: newValue })
+        }
     }
 
 
 
     const handleClose = async () => {
-        if(!id) {
-            // dispatch(addJournal({title: title, caption: caption, categories:[...cardValues.categories] ,content: value, id: uuidv4(), picture: "https://i.pinimg.com/280x280_RS/ab/a2/8e/aba28eb29f66aab5f24db128a0232f3f.jpg"  }))
-            const journalData = {
-              title: title,
-              caption: caption,
-              content: value,
-              categories: [...cardValues.categories],
-              photo: "https://i.pinimg.com/280x280_RS/ab/a2/8e/aba28eb29f66aab5f24db128a0232f3f.jpg"
-            }
+      if(!id) {
+        let photoUrl = "https://i.pinimg.com/280x280_RS/ab/a2/8e/aba28eb29f66aab5f24db128a0232f3f.jpg"; // Default URL
 
-            try {
-              const response = await journalApi.create(journalData);
-              console.log('Journal created:', response.data);
-            } catch (error) {
-              console.error('Error creating journal:', error);
-            }
-
+        if (selectedImage) {
+          photoUrl = selectedImage; 
         }
-        setOpen(false);
-        navigate("/journal");
-      };
+        console.log(cardValues.category)
+
+          const journalData = {
+            title: title,
+            caption: caption,
+            content: value,
+            category: cardValues,
+            photo: photoUrl
+          }
+
+          try {
+            const response = await journalApi.create({journalData});
+            console.log('Journal created:', response);
+            const newJournal = response.data;
+            addJournal(response);
+          } catch (error) {
+            console.error('Error creating journal:', error);
+          }
+
+      }
+      setOpen(false);
+      navigate("/journal");
+  }
 
       const [checking, setChecking] = useState(0);
       const addCategory = (category) => {
-        if(!id ) {
-          const updatedCategories = [category];
-          if(checking == 0){
-            setCardValues({categories: updatedCategories})
-          }  else {
-            setCardValues({categories:[...cardValues.categories, ...updatedCategories]})
+        if (!id) {
+          if (checking === 0) {
+            setCardValues([category]);
+          } else {
+            setCardValues((prevCategories) => [...prevCategories, category]);
           }
-          setChecking(checking + 1); 
-          console.log(cardValues)// Update the checking value
+          setChecking(checking + 1);
         } else {
-        const index = journalData.categories.findIndex(
-          (item) => item.text === category.text
-        );
+          const index = journalData.category.findIndex((item) => item.text === category.text);
+          if (index === -1) {
+            const updatedCategories = [...journalData.category, category];
+            console.log(updatedCategories)
+            const updatedJournalData = {
+              ...journalData,
+              category: updatedCategories,
+            };
 
-        if (index === -1) {
-          const updatedCategories = [...journalData.categories, category];
-
-          const updatedJournalData = {
-            ...journalData,
-            categories: updatedCategories,
-          };
-
-          setCardValues((prevValues) => ({
-            ...prevValues,
-            categories: [...prevValues.categories, category],
-          }));
-            dispatch(updateJournal(updatedJournalData));
-
+            console.log(updatedJournalData)
+      
+            setCardValues(updatedCategories);
+            journalUpdate(id, updatedJournalData);
+          }
         }
-        }
-      };      
+      };
+      
+      
+    
+    
+      
 
     
-      const removeLabel = (label) => {
-        const tempLabels = cardValues.categories.filter(
-          (item) => item.text !== label.text
-        );
-        console.log(tempLabels)
+    const removeLabel = (label) => {
+      if (id) {
+        const tempCategories = cardValues.filter((item) => item.text !== label.text);
     
         const updatedJournalData = {
           ...journalData,
-          categories: tempLabels,
+          category: tempCategories,
         };
-
-        setCardValues({
-          ...cardValues,
-          categories: tempLabels,
-        });
-        dispatch(updateJournal(updatedJournalData));
-      };
+    
+        setCardValues(updatedJournalData.category); // Update the category part of cardValues
+        journalUpdate(id, updatedJournalData);
+      } else {
+        const tempCategories = cardValues.filter((item) => item.text !== label.text);
+    
+        setCardValues(tempCategories);
+      }
+    };
+    
 
 
       const [selectedImage, setSelectedImage] = useState(null);
@@ -236,7 +256,7 @@ const JournalModal = ({id}) => {
                     <p>Keywords</p>
                 </div>
                 <div className="cardinfo-box-labels">
-                    {cardValues.categories?.map((item, index) => (
+                    {cardValues?.map((item, index) => (
                     <Chip key={index} item={item} removeLabel={removeLabel} />
                     ))}
                 </div>
@@ -262,10 +282,6 @@ const JournalModal = ({id}) => {
               
         </DialogContent>
       </Dialog>
-
-      {/* {openCategoryModal && (
-      <CategoryModal open={openCategoryModal} onClose={() => setOpenCategoryModal(false)} />
-      )} */}
 
     </>
   )

@@ -1,5 +1,4 @@
 const Board = require('../models/board')
-const SubTask = require('../models/subtask')
 const Task = require('../models/task')
 
 exports.create = async (req,res) => {

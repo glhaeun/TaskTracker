@@ -12,17 +12,42 @@ router.post(
 
 router.get(
     '/',
-    param('boardId').custom(value => {
-      if (!validation.isObjectId(value)) {
-        return Promise.reject('invalid board id')
-      } else return Promise.resolve()
-    }),
-    body('sectionId').custom(value => {
-      if (!validation.isObjectId(value)) {
-        return Promise.reject('invalid section id')
-      } else return Promise.resolve()
-    }),
     tokenHandler.verifyToken,
     journalController.getAll
-  )
-  
+)
+
+router.get(
+    '/:journalId',
+    param('journalId').custom(value=> {
+        if(!validation.isObjectId(value)){
+            return Promise.reject('invalid board id')
+        } else return Promise.resolve()
+       }),
+    tokenHandler.verifyToken,
+    journalController.getOne
+)
+
+  router.delete(
+    '/:journalId',
+    param('journalId').custom(value=> {
+        if(!validation.isObjectId(value)){
+            return Promise.reject('invalid board id')
+        } else return Promise.resolve()
+       }),
+    validation.validate,
+    tokenHandler.verifyToken,
+    journalController.delete
+)
+
+router.put(
+  '/:journalId',
+  param('journalId').custom(value=> {
+      if(!validation.isObjectId(value)){
+          return Promise.reject('invalid board id')
+      } else return Promise.resolve()
+     }),
+  validation.validate,
+  tokenHandler.verifyToken,
+  journalController.update
+)
+module.exports = router

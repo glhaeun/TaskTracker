@@ -1,0 +1,10 @@
+/* Add these styles to your CSS file or stylesheet */
+.card {
+    transition: transform 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px); /* Adjust the value as needed to control the "floating" effect */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Add a box shadow for depth */
+  }
+  

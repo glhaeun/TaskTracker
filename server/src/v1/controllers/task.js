@@ -1,5 +1,4 @@
 const Task = require('../models/task')
-const SubTask = require('../models/subtask')
 const Board = require('../models/board')
 
 exports.create = async (req, res) => {
@@ -7,7 +6,6 @@ exports.create = async (req, res) => {
   const { cardName } = req.body;
 
   try {
-    // Create the task
     const tasksCount = await Task.find({ board: boardId }).count();
     const task = await Task.create({
       board: boardId,
