@@ -3,11 +3,17 @@ import Loadable from "../component/Loadable";
 
 import MainLayout from '../layouts/MainLayout';
 import PrivateRoute from './PrivateRoutes';
+// import {
+//   QuickNotes,
+//   ArchiveNotes,
+//   DeletedNotes
+// } from "../views/pages/qnote/index";
+
 import {
   QuickNotes,
   ArchiveNotes,
   DeletedNotes
-} from "../views/pages/qnote/index";
+} from "../views/pages/finalNotes/index";
 
 
 const ToDo2 = Loadable(lazy(()=> import('../views/pages/finalTodo')))

@@ -3,6 +3,11 @@ const Schema = mongoose.Schema;
 const { schemaOptions } = require('./modelOptions');
 
 const noteSchema = new Schema({
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
     title: {
         type: String,
         required: true,
@@ -29,15 +34,19 @@ const noteSchema = new Schema({
     },
     isPinned: {
         type: Boolean,
+        default: false,
     },
     isRead: {
         type: Boolean,
+        default: false
     },
     isArchive: {
         type: Boolean,
+        default: false
     },
     isDeleted: {
         type: Boolean,
+        default: false
     },
     date: {
         type: String,
@@ -47,11 +56,10 @@ const noteSchema = new Schema({
     },
     editedTime: {
         type: Number, // Store as timestamp
-    },
-    id: {
-        type: String, // or ObjectId, or any appropriate type
-        required: true,
-    },
+    }
 }, schemaOptions);
 
 module.exports = mongoose.model('Note', noteSchema);
+
+
+

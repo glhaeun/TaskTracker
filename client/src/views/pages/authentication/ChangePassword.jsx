@@ -30,7 +30,7 @@ const ChangePassword = () => {
       .then((data) => {
         console.log("hi")
         console.log(data)
-        if (data.status !== 'success' || data.status == undefined) {
+        if (data.status !== 'success' || data.status === undefined) {
           setError(true); 
           setErrorMessage(data)
         }
