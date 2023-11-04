@@ -15,6 +15,8 @@ import {
   DeletedNotes
 } from "../views/pages/finalNotes/index";
 
+import Calendar from "../views/pages/calendar";
+
 
 const ToDo2 = Loadable(lazy(()=> import('../views/pages/finalTodo')))
 
@@ -32,7 +34,7 @@ const AppRoutes = {
     children: [
       {
         path: '/',
-        element: <PrivateRoute element={<ToDo />} />
+        element: <PrivateRoute element={<Calendar />} />
       },
       {
         path: 'todo',

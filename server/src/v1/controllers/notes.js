@@ -3,20 +3,21 @@ const User = require('../models/user')
 
 exports.create = async (req,res) => {
     console.log("here0")
+    console.log(req.body);
 
     try {
         const getUser = await User.findOne({_id: req.user._id})
-
+        console.log(getUser);
         const notes = await Notes.create({
             user: getUser._id,
-            title: req.body.notes.title, 
+            title: req.body.note.title, 
             date: new Date(), 
             createdTime: new Date(), 
             editedTime: new Date(), 
-            content: req.body.notes.content, 
-            tags: req.body.notes.tags, 
-            color: req.body.notes.color, 
-            priority: req.body.notes.priority,
+            content: req.body.note.content, 
+            tags: req.body.note.tags, 
+            color: req.body.note.color, 
+            priority: req.body.note.priority,
         })
        console.log(notes)
 
@@ -103,14 +104,14 @@ exports.updateStatus = async (req, res) => {
       }
  
   } else if (action === 'setDelete') {
-    const { isDelete } = req.body;
+    const { isDeleted } = req.body;
     console.log("first")
-    console.log(isDelete)
+    console.log(isDeleted)
 
     try {
         const updatedNote = await Notes.findOneAndUpdate(
             { _id: noteId, user: req.user._id },
-            { $set: { isDeleted: isDelete } },
+            { $set: { isDeleted: isDeleted } },
             { new: true }
         );
 
@@ -130,30 +131,30 @@ exports.updateStatus = async (req, res) => {
 
   
 
-//   exports.delete = async (req, res) => {
-//     const {journalId} = req.params
-//         try {
-//             await Journal.deleteOne({ _id: journalId})
-//             res.status(200).json('deleted')
-//         } catch (error) {
-//             res.status(500).json(error)
-//         }
-//     }
+  exports.delete = async (req, res) => {
+    const {noteId} = req.params
+        try {
+            await Notes.deleteOne({ _id: noteId})
+            res.status(200).json('deleted')
+        } catch (error) {
+            res.status(500).json(error)
+        }
+    }
 
-//     exports.update = async (req, res) => {
-//         const {journalId} = req.params
-//         console.log(req.body)
-//         try {
-//             const journal = await Journal.findByIdAndUpdate(
-//                 journalId,
-//                 { $set: req.body.journal}
-//             )
-//             console.log(journal)
-//             res.status(200).json(journal)
-//         } catch (error) {
-//             res.status(500).json(error)
-//         }
-//     }
+    exports.update = async (req, res) => {
+        const {noteId} = req.params
+        console.log(req.body)
+        try {
+            const note = await Notes.findByIdAndUpdate(
+                noteId,
+                { $set: req.body.note}
+            )
+            console.log(note)
+            res.status(200).json(note)
+        } catch (error) {
+            res.status(500).json(error)
+        }
+    }
 
 //     exports.getOne = async (req, res) =>{  
 //         const {journalId} = req.params

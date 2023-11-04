@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Container, EmptyMsgBox } from "../style";
 
-import { MainWrapper } from "../../../../component";
+import { MainWrapper } from "../../../../component/finalNotes";
 import notesApi from "../../../../api/notesApi";
 
 const DeletedNotes = () => {
@@ -22,6 +22,7 @@ const DeletedNotes = () => {
   };
 
   console.log(trashNotes)
+
 
   return (
     <Container>

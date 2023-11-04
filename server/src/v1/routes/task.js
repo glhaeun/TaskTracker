@@ -46,6 +46,17 @@ router.get(
   taskController.getAll
 )
 
+router.get(
+  '/upcoming',
+  param('boardId').custom(value => {
+    if (!validation.isObjectId(value)) {
+      return Promise.reject('invalid board id')
+    } else return Promise.resolve()
+  }),
+  tokenHandler.verifyToken,
+  taskController.getUpcoming
+)
+
 router.delete(
   '/:taskId',
   param('boardId').custom(value => {

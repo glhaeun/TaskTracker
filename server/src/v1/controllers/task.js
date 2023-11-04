@@ -180,3 +180,24 @@ exports.getAll = async (req, res) =>{
       res.status(500).json(err)
   }
 }
+
+exports.getUpcoming = async (req, res) =>{
+  const sectionId = req.query.sectionId;
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // Get the local time zone identifier
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Set time to midnight for accurate date comparison
+
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 2); // Get the date for tomorrow
+  tomorrow.setUTCHours(0, 0, 0, 0); // Set time to "T00:00:00.000+00:00"
+
+  console.log(today)
+  console.log(tomorrow)
+
+  try{
+      const task = await Task.find({section: sectionId}).sort('-position')
+      res.status(201).json(task)
+  } catch(err) {
+      res.status(500).json(err)
+  }
+}

@@ -47,27 +47,28 @@ router.put(
 //     journalController.getOne
 // )
 
-//   router.delete(
-//     '/:journalId',
-//     param('journalId').custom(value=> {
-//         if(!validation.isObjectId(value)){
-//             return Promise.reject('invalid board id')
-//         } else return Promise.resolve()
-//        }),
-//     validation.validate,
-//     tokenHandler.verifyToken,
-//     journalController.delete
-// )
+  router.delete(
+    '/:noteId',
+    param('noteId').custom(value=> {
+        if(!validation.isObjectId(value)){
+            return Promise.reject('invalid board id')
+        } else return Promise.resolve()
+       }),
+    validation.validate,
+    tokenHandler.verifyToken,
+    notesController.delete
+)
 
-// router.put(
-//   '/:journalId',
-//   param('journalId').custom(value=> {
-//       if(!validation.isObjectId(value)){
-//           return Promise.reject('invalid board id')
-//       } else return Promise.resolve()
-//      }),
-//   validation.validate,
-//   tokenHandler.verifyToken,
-//   journalController.update
-// )
+router.put(
+  '/:noteId/update',
+  param('noteId').custom(value=> {
+      if(!validation.isObjectId(value)){
+          return Promise.reject('invalid board id')
+      } else return Promise.resolve()
+     }),
+  validation.validate,
+  tokenHandler.verifyToken,
+  notesController.update
+)
+
 module.exports = router

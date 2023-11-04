@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NotesIconBox } from '../../views/pages/finalNotes/style';
 import { IconTrash , IconArchive, IconRestore, IconEdit} from "@tabler/icons-react";
 import notesApi from '../../api/notesApi';
 
 const Footer = ({type, fetchNotes, isEditing, setIsEditing, note}) => {
-    const {id, isArchive, isDelete} = note
-    console.log(note)
+    const {id, isArchive, isDeleted} = note
+    console.log(isDeleted)
     const editNoteHandler = () => {
         setIsEditing(true); // Set the state to indicate that editing is requested
       };
@@ -17,10 +17,15 @@ const Footer = ({type, fetchNotes, isEditing, setIsEditing, note}) => {
         fetchNotes();
       }
 
-      const setDeleteHandler = async(id, isDelete) => {
+      const setDeleteHandler = async(id, isDeleted) => {
         console.log(id)
-        console.log(isDelete)
-        await notesApi.setDelete(id, {isDelete: !isDelete});
+        console.log(isDeleted)
+        await notesApi.setDelete(id, {isDeleted: !isDeleted});
+        fetchNotes();
+      }
+
+      const deletePermanentHandler = async(id) => {
+        await notesApi.delete(id);
         fetchNotes();
       }
     
@@ -35,7 +40,7 @@ const Footer = ({type, fetchNotes, isEditing, setIsEditing, note}) => {
         <NotesIconBox onClick={() => setArchiveHandler(id, isArchive)} data-info="Archive">
           <IconArchive />
         </NotesIconBox>
-        <NotesIconBox onClick={() => setDeleteHandler(id, isDelete)} data-info="Delete">
+        <NotesIconBox onClick={() => setDeleteHandler(id, isDeleted)} data-info="Delete">
           <IconTrash />
         </NotesIconBox>
       </div>
@@ -54,11 +59,11 @@ const Footer = ({type, fetchNotes, isEditing, setIsEditing, note}) => {
   } else {
     footer = (
         <div className="deleteCard">
-          <NotesIconBox onClick={() => setDeleteHandler(id, isDelete)} data-info="Restore">
+          <NotesIconBox onClick={() => setDeleteHandler(id, isDeleted)} data-info="Restore">
             <IconRestore />
           </NotesIconBox>
           <NotesIconBox data-info="Delete">
-            <IconTrash />
+            <IconTrash onClick={() => deletePermanentHandler(id)} data-info="DeletePermanent"/>
           </NotesIconBox>
         </div>
       );

@@ -107,6 +107,16 @@ const AllNotes = () => {
     });
   };
 
+  const updateNoteArchive = (noteId, isArchive) => {
+    setNotes((prevNotes) => {
+      return prevNotes.map((note) => {
+        if (note.id === noteId) {
+          return { ...note, isArchive };
+        }
+        return note;
+      });
+    });
+  };
 
   return (
     <Container>
@@ -148,7 +158,8 @@ const AllNotes = () => {
             startIcon={<IconSortAscending />}
            />
             <div>
-                {viewCreateModal && <CreateNoteModal mode="Create" onClose={handleClose}/>}
+                {viewCreateModal && <CreateNoteModal mode="Create" onClose={handleClose}
+                 fetchNotes={fetchNotes}/>}
                   {state !== "Trash" && state !== "Archive" && (
                     <Button
                     variant="contained"

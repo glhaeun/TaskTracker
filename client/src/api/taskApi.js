@@ -16,6 +16,7 @@ const taskApi = {
     params
   ),
   getAll: (boardId, queryParams) => axiosClient.get(`todo/${boardId}/task`, { params: queryParams }),
+  getUpcoming: (boardId) => axiosClient.get(`todo/${boardId}/task/getUpcoming`)
 }
 
 export default taskApi

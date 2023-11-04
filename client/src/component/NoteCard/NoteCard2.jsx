@@ -23,12 +23,21 @@ import notesApi from "../../api/notesApi";
 import Footer from "./Footer";
 
 const NoteCard = ({ note, type , fetchNotes}) => {
-  const { title, content, tags, color, priority, date, isPinned, id, isArchive, isDelete } =
-    note;
+  const { title, content, tags, color, priority, date, isPinned, id, isArchive, isDeleted } =
+  note;
 
   const dispatch = useDispatch();
   const [read, setRead] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+
+  const parsedDate = new Date(date);
+  const day = String(parsedDate.getDate()).padStart(2, '0');
+const month = String(parsedDate.getMonth() + 1).padStart(2, '0'); // Months are 0-based, so we add 1
+const year = parsedDate.getFullYear();
+
+const formattedDate = `${day}/${month}/${year}`;
+console.log(formattedDate);
+  
 
   const func = () => {
     const imgContent = content.includes("img");
@@ -90,9 +99,9 @@ const NoteCard = ({ note, type , fetchNotes}) => {
         </TagsBox>
 
         <FooterBox>
-          <div className="noteCard__date">{date}</div>
+          <div className="noteCard__date">{formattedDate}</div>
           <div>
-          <Footer type={type} fetchNotes={fetchNotes} isEditing={isEditing} note={note}>
+          <Footer type={type} fetchNotes={fetchNotes} isEditing={isEditing} note={note} setIsEditing={setIsEditing} >
           </Footer>
           </div>
         </FooterBox>
@@ -103,7 +112,8 @@ const NoteCard = ({ note, type , fetchNotes}) => {
         <CreateNoteModal
           mode="Edit"
           editNote={note}
-          onClose={() => setIsEditing(false)} // Close the modal when editing is done
+          onClose={() => setIsEditing(false)}
+          fetchNotes={fetchNotes} // Close the modal when editing is done
         />
       )}
     </>

@@ -31,8 +31,9 @@ import TextEditor from "../../../TextEditor/TextEditor";
 import TagsModal from "../TagsModal/TagsModal";
 import { IconX, IconPlus } from "@tabler/icons-react";
 import { Button } from "@mui/material";
+import notesApi from "../../../../api/notesApi";
 
-const CreateNoteModal = ({ editNote, mode, onClose }) => {
+const CreateNoteModal = ({ editNote, mode, onClose, fetchNotes }) => {
   const dispatch = useDispatch();
 
   console.log(editNote, mode, onClose)
@@ -67,7 +68,7 @@ const CreateNoteModal = ({ editNote, mode, onClose }) => {
   };
 
   // create note
-  const createNoteHandler = () => {
+  const createNoteHandler = async () => {
     if (!noteTitle) {
       toast.error("You must add title");
       return;
@@ -86,24 +87,38 @@ const CreateNoteModal = ({ editNote, mode, onClose }) => {
       priority,
       editedTime: new Date().getTime(),
     };
-    
-    if (editNote) {
-      note = { ...editNote, ...note };
+
+    if(mode === "Edit") {
+      const response = await notesApi.update(editNote.id, {note});
+      console.log('Note updated:', response);
+      fetchNotes();
     } else {
-      note = {
-        ...note,
-        date,
-        createdTime: new Date().getTime(),
-        editedTime: null,
-        isPinned: false,
-        isRead: false,
-        id: v4(),
-      };
+      try {
+        const response = await notesApi.create({note});
+        console.log('Note created:', response);
+        fetchNotes();
+      } catch (error) {
+        console.error('Error creating journal:', error);
+      }
     }
     
-    dispatch(setMainNotes(note));
-    dispatch(toggleCreateNoteModal(false));
-    dispatch(setEditNote(null));
+    // if (editNote) {
+    //   note = { ...editNote, ...note };
+    // } else {
+    //   note = {
+    //     ...note,
+    //     date,
+    //     createdTime: new Date().getTime(),
+    //     editedTime: null,
+    //     isPinned: false,
+    //     isRead: false,
+    //     id: v4(),
+    //   };
+    // }
+    
+    // dispatch(setMainNotes(note));
+    // dispatch(toggleCreateNoteModal(false));
+    // dispatch(setEditNote(null));
     onClose(); 
 
   };

@@ -8,7 +8,7 @@ import taskApi from '../../../../../api/taskApi';
 import MainCard from '../../../../../component/cards/MainCard';
 import CardInfo from "./CardInfo";
 import Chip from './../../../../../component/extended/Chips';
-import { CheckSquare } from 'react-feather';
+import { CheckSquare, Clock } from 'react-feather';
 import './style.css'
 import { MoreHorizontal } from 'react-feather';
 import Menu from './Menu';
@@ -180,6 +180,15 @@ const Kanban = (props) => {
       console.error(err);
     }
   };
+
+  function formatDate(date) {
+    const dateObject = new Date(date);
+    const year = dateObject.getFullYear();
+    const month = String(dateObject.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed, so add 1
+    const day = String(dateObject.getDate()).padStart(2, '0');
+  
+    return `${year}-${month}-${day}`;
+  }
   
   
 
@@ -294,12 +303,12 @@ const Kanban = (props) => {
                         </p>
                       </div>
                       <div className="card-footer">
-                        {/* {date && (
+                        {task.date && (
                           <p className="card-footer-item">
                             <Clock className="card-footer-icon" />
-                            {formatDate(date)}
+                            {formatDate(task.date)}
                           </p>
-                        )} */}
+                        )}
                         {task.subtasks?.length > 0 && (
                           <p className="card-footer-item">
                             <CheckSquare className="card-footer-icon" />

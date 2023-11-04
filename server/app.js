@@ -3,6 +3,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors')
+const cron = require('node-cron');
+const notificationTask = require('./src/v1/routes/notification');
 
 const app = express();
 
@@ -14,5 +16,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/v1', require('./src/v1/routes'));
+
+cron.schedule('16 19 * * *', () => {
+    notificationTask();
+});
 
 module.exports = app;

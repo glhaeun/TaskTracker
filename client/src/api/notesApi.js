@@ -7,7 +7,10 @@ const notesApi = {
     getDeleted: () => axiosClient.get('notes/deleted'),
     setPinned: (noteId, params) => axiosClient.put(`notes/${noteId}?action=setPinned`, params),
     setArchive: (noteId, params) => axiosClient.put(`notes/${noteId}?action=setArchive`, params),
-    setDelete: (noteId, params) => axiosClient.put(`notes/${noteId}?action=setDelete`, params)
+    setDelete: (noteId, params) => axiosClient.put(`notes/${noteId}?action=setDelete`, params),
+    delete: (noteId) => axiosClient.delete(`notes/${noteId}`),
+    update : (noteId, params) => axiosClient.put(`notes/${noteId}/update`, params),
+
     
 }
 

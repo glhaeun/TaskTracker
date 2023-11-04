@@ -71,6 +71,8 @@ const ProfileSection = () => {
   const custom = useSelector((state) => state.custom);
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.value)
+  const stringName = user.name; 
+  // const avatarProps = stringAvatar(stringName); 
 
   const [sdm, setSdm] = useState(true);
   const [value, setValue] = useState('');
@@ -78,7 +80,8 @@ const ProfileSection = () => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
   
-  const name = JSON.stringify(user.name)
+  // const name = JSON.stringify(user.name)
+  console.log(user);
   
   const anchorRef = useRef(null);
   const handleLogout = async () => {
@@ -147,7 +150,7 @@ const ProfileSection = () => {
             aria-controls={open ? 'menu-list-grow' : undefined}
             aria-haspopup="true"
             color="inherit"
-            {...stringAvatar("Grace")}
+            {...stringAvatar("HaEun")}
           />
         }
         label={<IconSettings stroke={1.5} size="1.5rem" color={theme.palette.primary.main} />}
