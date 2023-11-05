@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authApi from "../../../../api/authApi";
-
+import { toast } from "react-toastify";
 import { useTheme } from "@mui/material/styles";
 import {
   Box,
@@ -47,6 +47,7 @@ const LoginForm = ({ ...others }) => {
       console.log(res.token);
       localStorage.setItem("token", res.token);
       setStatus({ success: true });
+      toast.success("Login Success !");
       setSubmitting(false);
       navigate("/");
     } catch (err) {
@@ -200,7 +201,6 @@ const LoginForm = ({ ...others }) => {
                 <FormHelperText error>{errors.submit}</FormHelperText>
               </Box>
             )}
-
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
                 <Button
