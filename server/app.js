@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/v1', require('./src/v1/routes'));
 
-cron.schedule('16 19 * * *', () => {
+cron.schedule('21 19 * * *', () => {
     notificationTask();
 });
 

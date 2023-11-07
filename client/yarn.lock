@@ -2204,6 +2204,11 @@
   resolved "https://registry.npmjs.org/@fontsource/roboto/-/roboto-5.0.8.tgz#613b477a56f21b5705db1a67e995c033ef317f76"
   integrity sha512-XxPltXs5R31D6UZeLIV1td3wTXU3jzd3f2DLsXI8tytMGBkIsGcc9sIyiupRtA8y73HAhuSCeweOoBqf6DbWCA==
 
+"@fullcalendar/list@^6.1.9":
+  version "6.1.9"
+  resolved "https://registry.npmjs.org/@fullcalendar/list/-/list-6.1.9.tgz#67ce0712a8713fd478fde5c71ec2d94dff68a2a4"
+  integrity sha512-OCKdC1Gz26cJ5QsXdQyXVyzVu23ypT2xzyAR+Wc8jEytcJLWXw2a914m/MVax8n8EHuaIYY2exhsy/eaSU0XNA==
+
 "@headlessui/react@^1.7.17":
   version "1.7.17"
   resolved "https://registry.npmjs.org/@headlessui/react/-/react-1.7.17.tgz#a0ec23af21b527c030967245fd99776aa7352bc6"
@@ -4885,6 +4890,11 @@ bootstrap@5.3.1:
   resolved "https://registry.npmjs.org/bootstrap/-/bootstrap-5.3.1.tgz#8ca07040ad15d7f75891d1504cf14c5dedfb1cfe"
   integrity sha512-jzwza3Yagduci2x0rr9MeFSORjcHpt0lRZukZPZQJT1Dth5qzV7XcgGqYzi39KGAVYR8QEDVoO0ubFKOxzMG+g==
 
+bootstrap@^5.3.2:
+  version "5.3.2"
+  resolved "https://registry.npmjs.org/bootstrap/-/bootstrap-5.3.2.tgz#97226583f27aae93b2b28ab23f4c114757ff16ae"
+  integrity sha512-D32nmNWiQHo94BKHLmOrdjlL05q1c8oxbtBphQFb9Z5to6eGRDCm0QgeaZ4zFBHzfg2++rqa2JkqCcxDy0sH0g==
+
 bowser@^2.11.0:
   version "2.11.0"
   resolved "https://registry.npmjs.org/bowser/-/bowser-2.11.0.tgz#5ca3c35757a7aa5771500c70a73a9f91ef420a8f"
@@ -5895,6 +5905,11 @@ domhandler@^4.0.0, domhandler@^4.2.0, domhandler@^4.3.1:
   integrity sha512-GrwoxYN+uWlzO8uhUXRl0P+kHE4GtVPfYzVLcUxPL7KNdHKj66vvlhiweIHqYYXWlw+T8iLMp42Lm67ghw4WMQ==
   dependencies:
     domelementtype "^2.2.0"
+
+dompurify@^3.0.6:
+  version "3.0.6"
+  resolved "https://registry.npmjs.org/dompurify/-/dompurify-3.0.6.tgz#925ebd576d54a9531b5d76f0a5bef32548351dae"
+  integrity sha512-ilkD8YEnnGh1zJ240uJsW7AzE+2qpbOUYjacomn3AvJ6J4JhKGSZ2nh4wUIXPZrEPppaCLx5jFe8T89Rk8tQ7w==
 
 domutils@^1.7.0:
   version "1.7.0"

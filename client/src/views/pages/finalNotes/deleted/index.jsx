@@ -4,6 +4,8 @@ import { Container, EmptyMsgBox } from "../style";
 
 import { MainWrapper } from "../../../../component/finalNotes";
 import notesApi from "../../../../api/notesApi";
+import { motion } from 'framer-motion'
+import { variants } from '../../../../component/motion/layoutMotion';
 
 const DeletedNotes = () => {
   const [trashNotes, setTrashNotes] = useState([]);
@@ -25,13 +27,24 @@ const DeletedNotes = () => {
 
 
   return (
-    <Container>
+    <>
+    <motion.div
+			variants={variants}
+			initial='hidden'
+			animate='enter'
+			exit='exit'
+			transition={{ type: 'linear' }}
+      >
+      <Container>
       {trashNotes.length === 0 ? (
         <EmptyMsgBox>There are no deleted notes</EmptyMsgBox>
       ) : (
         <MainWrapper notes={trashNotes} type="trash" fetchNotes={fetchNotes}/>
       )}
     </Container>
+      </motion.div>
+    </>
+    
   );
 };
 

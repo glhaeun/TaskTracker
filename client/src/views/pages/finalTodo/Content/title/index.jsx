@@ -48,6 +48,7 @@ const Controls = styled.div`
 
 const Title = (props) => {
   const user = useSelector((state) => state.user.value)
+  console.log(user)
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 

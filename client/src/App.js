@@ -5,6 +5,7 @@ import Routes from './routes/Routes';
 import themes from '../src/themes';
 import NavigationScroll from '../src/layouts/NavigationScroll';
 
+
 function App() {
   const customization = useSelector((state) => state.customization);
   return (

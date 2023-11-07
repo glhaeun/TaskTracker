@@ -268,13 +268,17 @@ const Kanban = (props) => {
                         sx={{
                           boxShadow: '0px 9px 12px rgba(0, 0, 0, 0.09), 0px 6px 6px rgba(0, 0, 0, 0.06)',
                           marginBottom: '10px',
-                          cursor: snapshot.isDragging ? 'grab' : 'pointer!important'
+                          cursor: snapshot.isDragging ? 'grab' : 'pointer!important',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '10px'
                         }}
                         onClick={() => toggleCardInfo(task, board.id)}
                         onMouseEnter={() => onCardMouseEnter(index)}
                         onMouseLeave={() => onCardMouseLeave(index)}
                         >
-                        <div className="card-top">
+                      <div className="card-content">
+                      <div className="card-top">
                         <div className="card-top-labels">
                           {task.labels?.map((item, index) => (
                             <Chip key={index} item={item} />
@@ -303,10 +307,16 @@ const Kanban = (props) => {
                         </p>
                       </div>
                       <div className="card-footer">
-                        {task.date && (
+                      {task.date && (
                           <p className="card-footer-item">
-                            <Clock className="card-footer-icon" />
-                            {formatDate(task.date)}
+                            <Clock
+                             style={{ color: new Date(task.date) < new Date() ? 'red' : 'inherit' }}
+                            className="card-footer-icon" />
+                            <span
+                              style={{ color: new Date(task.date) < new Date() ? 'red' : 'inherit' }}
+                            >
+                              {formatDate(task.date)}
+                            </span>
                           </p>
                         )}
                         {task.subtasks?.length > 0 && (
@@ -315,6 +325,7 @@ const Kanban = (props) => {
                             {task.subtasks?.filter((item) => item.isCompleted)?.length}/{task.subtasks?.length}
                           </p>
                         )}
+                      </div>
                       </div>
                       </MainCard>
                     )}

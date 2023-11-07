@@ -1,8 +1,12 @@
+
+
 .calender-container>div{
     margin: auto;
-    width: 90%;
-    padding: 0rem 5rem;
+    width: 100%;
+    padding: 2rem 2rem;
     max-width: 1100px;
+    margin-bottom: 10px;
+    background-color: white;
 }
 
 .fc-event{
@@ -13,6 +17,56 @@
     height: 2.5rem !important;
 }
 
+.fc-timegrid-slot-lane{
+    height: 2.5rem !important;
+}
+
+.fc-timegrid-col-frame{
+    border: 0.2px solid gray;
+}
+
 td{
     border: 1px solid var(--grey) !important;
 }
+
+.fc * {
+    border-radius: 0px;
+}
+
+.fc-event-main {
+    background-color: lightblue;
+    border-radius: 5px;
+}
+
+.fc-event-main-frame {
+    color: black;
+}
+
+.fc-timegrid-event {
+    border-radius: 5px;
+}
+
+/* CSS for event-tooltip popover */
+.event-tooltip {
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border: 1px solid #ccc;
+    padding: 10px;
+    max-width: 300px;
+    z-index: 1000; /* Ensure it appears on top of other elements */
+    font-size: 14px;
+  }
+  
+  /* CSS for the event title */
+  .event-tooltip strong {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  
+  /* CSS for event time information */
+  .event-tooltip p {
+    margin: 0;
+  }
+  

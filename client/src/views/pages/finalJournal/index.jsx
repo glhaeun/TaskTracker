@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { motion } from 'framer-motion'
+import { variants } from '../../../component/motion/layoutMotion';
 
 const ContentJournal = React.lazy(() => import('./content'));
 
@@ -12,10 +14,18 @@ const Wrapper = styled.div`
 
 const ToDo = () => {
   return (
-      <>
+    <>
+    <motion.div
+			variants={variants}
+			initial='hidden'
+			animate='enter'
+			exit='exit'
+			transition={{ type: 'linear' }}
+      >
         <Wrapper>
               <ContentJournal />
         </Wrapper>
+        </motion.div>
       </>
   )
 }

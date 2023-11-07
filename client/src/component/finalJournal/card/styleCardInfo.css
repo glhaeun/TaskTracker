@@ -1,6 +1,8 @@
 /* Add these styles to your CSS file or stylesheet */
 .card {
     transition: transform 0.3s ease;
+    max-height: 700px;
+    min-height: 425px;
   }
   
   .card:hover {
@@ -8,3 +10,24 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Add a box shadow for depth */
   }
   
+  .buttons{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  .date, .caption {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    margin: 5px;
+  }
+
+  .outer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    min-height: 300px;
+  }

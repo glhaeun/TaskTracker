@@ -4,6 +4,9 @@ import { MainWrapper } from "../../../../component/finalNotes";
 
 import { useEffect, useState } from "react";
 import notesApi from "../../../../api/notesApi";
+import { variants } from '../../../../component/motion/layoutMotion';
+import { motion } from 'framer-motion'
+
 
 const ArchiveNotes = () => {
   const [archiveNotes, setArchiveNotes] = useState([]);
@@ -22,6 +25,14 @@ const ArchiveNotes = () => {
   };
 
   return (
+    <>
+    <motion.div
+			variants={variants}
+			initial='hidden'
+			animate='enter'
+			exit='exit'
+			transition={{ type: 'linear' }}
+      >
     <Container>
       {archiveNotes.length === 0 ? (
         <EmptyMsgBox>There are no archive notes</EmptyMsgBox>
@@ -29,6 +40,8 @@ const ArchiveNotes = () => {
         <MainWrapper notes={archiveNotes} type="archive" fetchNotes={fetchNotes}/>
       )}
     </Container>
+    </motion.div>
+    </>
   );
 };
 

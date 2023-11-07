@@ -18,30 +18,13 @@ const JournalModal = ({id, addJournal, journalUpdate}) => {
     const [open, setOpen] = useState(true);
     const [title, setTitle] = useState('Untitled')
     const [caption, setCaption] = useState('Set your caption here')
-    const [value, setValue] = useState('');
+    const [content, setContent] = useState('');
     const [selectedColor, setSelectedColor] = useState("");
     const [cardValues, setCardValues] = useState([]); 
     const [journalData, setJournalData] = useState([])
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-
-    // const journalData = useSelector((state)=>
-    // state.journal.journalList.find((journal)=> journal.id === id));
-    const journalList = useSelector((state) => state.journal.journalList);
-
-    // useEffect(() => {
-    //     if (journalData) {
-    //         setTitle(journalData.title)
-    //         setCaption(journalData.caption)
-    //         setValue(journalData.content)
-    //         setSelectedImage(journalData.photo)
-    //         setCardValues([journalData])
-    //         setCardValues({ categories: journalData.categories || [] }); 
-    //     }
-
-    //     console.log(cardValues)
-    // }, [journalData])
 
     useEffect( () => {
       if(id) {
@@ -52,7 +35,7 @@ const JournalModal = ({id, addJournal, journalUpdate}) => {
             setTitle(journalData2.title)
             setCaption(journalData2.caption)
             setSelectedImage(journalData.photo)
-            setValue(journalData2.value)
+            setContent(journalData2.content)
             setCardValues(journalData2.category || []); // Initialize with categories from journalData2
           } catch (error) {
             console.error("Error fetching board data: ", error);
@@ -81,7 +64,7 @@ const JournalModal = ({id, addJournal, journalUpdate}) => {
     }
 
     const editContent = (newValue) => {
-        setValue(newValue); // Update the state with the new content
+        setContent(newValue); // Update the state with the new content
         if(id) {
           journalUpdate(id, { ...journalData, content: newValue })
         }
@@ -101,7 +84,7 @@ const JournalModal = ({id, addJournal, journalUpdate}) => {
           const journalData = {
             title: title,
             caption: caption,
-            content: value,
+            content: content,
             category: cardValues,
             photo: photoUrl
           }
@@ -245,7 +228,7 @@ const JournalModal = ({id, addJournal, journalUpdate}) => {
                 </Grid>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                    <TextEditor value={value} setValue={editContent} />
+                    <TextEditor value={content} setValue={editContent} />
                     </Grid>
                 </Grid> 
 

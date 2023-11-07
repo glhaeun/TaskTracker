@@ -97,7 +97,7 @@ const LoginForm = ({ ...others }) => {
             .email("Must be a valid email")
             .max(255)
             .required("Email is required"),
-          password: Yup.string().max(255).required("Password is required"),
+          password: Yup.string().max(255).min(8, "Password must be at least 8 characters").required("Password is required"),
         })}
         onSubmit={handleSubmit}
       >

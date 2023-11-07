@@ -17,10 +17,13 @@ import {
 
 import Calendar from "../views/pages/calendar";
 
+import BudgetDashboard from '../views/pages/budget/budgetDash';
+import BudgetPage from '../views/pages/budget/BudgetPage';
+import ExpensesPage from '../views/pages/budget/ExpensesPage';
 
 const ToDo2 = Loadable(lazy(()=> import('../views/pages/finalTodo')))
 
-const ToDo = Loadable(lazy(()=> import('../views/pages/kanbanTes')))
+// const ToDo = Loadable(lazy(()=> import('../views/pages/kanbanTes')))
 const Main = Loadable(lazy(()=> import('../views/pages/todo/main')))
 const Journal = Loadable(lazy(()=> import('../views/pages/journalTes')))
 const Journal2 = Loadable(lazy(()=> import('../views/pages/finalJournal')))
@@ -68,6 +71,23 @@ const AppRoutes = {
           {
             path: '/journal',
             element: <PrivateRoute element={<Journal2 />} />,
+          }
+        ],
+      },
+      {
+        path: 'budget', 
+        children: [
+          {
+            path: '',
+            element: <PrivateRoute element={<BudgetDashboard />} />,
+          },
+          {
+            path: ':budgetId', // Match /budget/:budgetId
+            element: <PrivateRoute element={<BudgetPage />} />,
+          },
+          {
+            path: 'expense',
+            element: <PrivateRoute element={<ExpensesPage/>}/>
           }
         ],
       },
