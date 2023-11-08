@@ -13,7 +13,7 @@ import './style.css'
 import { MoreHorizontal } from 'react-feather';
 import Menu from './Menu';
 import { AlignLeft } from 'react-feather';
-import { IconX } from '@tabler/icons-react';
+import { IconTrash, IconX } from '@tabler/icons-react';
 
                                        
                     
@@ -92,7 +92,6 @@ const Kanban = (props) => {
         resourceBoardId: sourceBoardId,
         destinationBoardId: destinationBoardId
       })
-      console.log(data)
       setData(data)
     } catch (err) {
       alert(err)
@@ -136,7 +135,7 @@ const Kanban = (props) => {
   };
 
   const removeCard = async (boardId, taskId) => {
-    const task = await taskApi.delete(boardId, taskId)
+    await taskApi.delete(boardId, taskId)
 
     const newData = [...data];
     newData.forEach(board => {
@@ -257,7 +256,6 @@ const Kanban = (props) => {
         </div>
         <Box className="card" sx={{backgroundColor: 'lightgray', padding: '10px', borderRadius: '0.5rem'}}>
             { board?.tasks?.map((task, index) => {
-              console.log(task)
                 return (
                   <Draggable key={task._id} draggableId={task._id} index={index}>
                     {(provided, snapshot) => (
@@ -286,15 +284,19 @@ const Kanban = (props) => {
                         </div>
                     <div
                       className="card-top-more"
-                      
                     >
-                      {showIconX[index] && (
-                        <IconX
-                        onClick={(e) => {
+                    {showIconX[index] && (
+                      <div className="board-dropdown" 
+                      onClose={() => {
+                        const updatedShowDropdowns = [...showIconX];
+                        showIconX[index] = false;
+                        showIconX(updatedShowDropdowns);
+                      }}>
+                        <p onClick={(e) => {
                           e.stopPropagation(); // Prevent click event propagation
                           removeCard(board.id, task.id);
-                        }}
-                        />
+                        }}><IconTrash/></p>
+                      </div>
                        )}
                       </div>
                       </div>

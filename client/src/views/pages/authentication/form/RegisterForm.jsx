@@ -94,9 +94,10 @@ const RegisterForm = ({ ...others }) => {
     } catch (err) {
       if (err.data && err.data.errors) {
         const errors = err.data.errors;
-        const emailError = errors.find((e) => e.param === "username");
-        const passwordError = errors.find((e) => e.param === "password");
-        const nameError = errors.find((e) => e.param === "name");
+        console.log(errors)
+        const emailError = errors.find((e) => e.path === "username");
+        const passwordError = errors.find((e) => e.path === "password");
+        const nameError = errors.find((e) => e.path === "name");
 
         setErrors({ email: "", password: "", name: "" });
 
