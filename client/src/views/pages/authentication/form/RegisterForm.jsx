@@ -70,17 +70,16 @@ const RegisterForm = ({ ...others }) => {
       const now = new Date();
       now.setHours(now.getHours() + 24);
       const verificationExpiresAt = now;
-      const res = await authApi.signup({
+      await authApi.signup({
         username: email,
         password,
         name,
         isVerified,
         verificationExpiresAt,
       });
-      console.log(res);
       toast.success("Registered Success !", {
-        position: "top-right",
-        autoClose: 3000,
+        position: "bottom-right",
+        autoClose: 2500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -94,24 +93,22 @@ const RegisterForm = ({ ...others }) => {
     } catch (err) {
       if (err.data && err.data.errors) {
         const errors = err.data.errors;
-        console.log(errors)
         const emailError = errors.find((e) => e.path === "username");
-        const passwordError = errors.find((e) => e.path === "password");
-        const nameError = errors.find((e) => e.path === "name");
-
         setErrors({ email: "", password: "", name: "" });
 
         if (emailError) {
-          setErrors({ submit: emailError.msg });
+          toast.error("Email Registered !", {
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
         }
 
-        if (passwordError) {
-          setErrors({ submit: passwordError.msg });
-        }
-
-        if (nameError) {
-          setErrors({ submit: nameError.msg });
-        }
         setStatus({ success: false });
         setSubmitting(false);
       }
