@@ -53,6 +53,7 @@ const LoginForm = ({ ...others }) => {
     } catch (err) {
       if (err.data && err.data.errors) {
         const errors = err.data.errors;
+        console.log(errors)
         const emailError = errors.find((e) => e.param === "username");
         const passwordError = errors.find((e) => e.param === "password");
 

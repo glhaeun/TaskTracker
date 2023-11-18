@@ -33,7 +33,6 @@ const Content = () => {
         try {
           const result = await boardApi.getAll({userId})
           setBoard(result)
-          console.log(result)
           } catch (error) {
           alert(error)
           console.log(error)
