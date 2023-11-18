@@ -6,14 +6,14 @@ import { removeJournal } from "../../../redux/featuresJournal/journal/tesSlice";
 import Chip from "../../extended/Chips";
 import "./styleCardInfo.css"
 import journalApi from '../../../api/journalApi';
-import DOMPurify from "dompurify";
 
 
 const JournalInfo = (props) => {
   const journal = props.journal;
   const photo = journal.photo;
   const timestamp = journal.createdTime;
-  const date = new Date(timestamp);
+
+  const date = timestamp ? new Date(timestamp) : new Date(); 
   const formattedDate = date.toLocaleString();
 
   const formatDate = date.toISOString().split('T')[0];

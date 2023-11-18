@@ -1,4 +1,4 @@
-import { NotesIconBox } from "../views/pages/qnote/style";
+import { NotesIconBox } from "../views/pages/finalNotes/style";
 
 //redux
 import {

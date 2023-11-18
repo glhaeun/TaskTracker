@@ -19,8 +19,9 @@ router.get(
 router.get(
     '/expenses',
     tokenHandler.verifyToken,
-    budgetController.getAllExpenses
+    budgetController.getAllExpenses,
 )
+
 
 router.get(
     '/:budgetId',
@@ -33,7 +34,7 @@ router.get(
     budgetController.getOne
 )
 
-  router.delete(
+router.delete(
     '/:budgetId',
     param('budgetId').custom(value=> {
         if(!validation.isObjectId(value)){
@@ -43,6 +44,19 @@ router.get(
     validation.validate,
     tokenHandler.verifyToken,
     budgetController.delete
+)
+
+
+router.delete(
+    '/:budgetId/:expenseId',
+    param('expenseId').custom(value=> {
+        if(!validation.isObjectId(value)){
+            return Promise.reject('invalid board id')
+        } else return Promise.resolve()
+       }),
+    validation.validate,
+    tokenHandler.verifyToken,
+    budgetController.deleteExpense
 )
 
 router.put(

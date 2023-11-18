@@ -14,7 +14,7 @@ import {
   OptionsBox,
 } from "./CreateNoteModal.styles";
 import { ButtonFill, ButtonOutline } from
- "../../../../views/pages/qnote/style";
+ "../../../../views/pages/finalNotes/style";
 
 
 //redux

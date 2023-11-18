@@ -48,26 +48,17 @@ const JournalModal = ({id, addJournal, journalUpdate}) => {
 
     const editTitle = (e) => {
         const newTitle = e.target.value;
-        if(id) {
-          journalUpdate(id, { ...journalData, title: newTitle })
-        }
         setTitle(newTitle);
     };
       
 
     const editCaption = (event) => {
         const newCaption= event.target.value;
-        if(id) {
-          journalUpdate(id, { ...journalData, caption: newCaption })
-        }
         setCaption(newCaption)
     }
 
     const editContent = (newValue) => {
         setContent(newValue); // Update the state with the new content
-        if(id) {
-          journalUpdate(id, { ...journalData, content: newValue })
-        }
     }
 
 
@@ -98,6 +89,10 @@ const JournalModal = ({id, addJournal, journalUpdate}) => {
             console.error('Error creating journal:', error);
           }
 
+      } else {
+        if(id) {
+          journalUpdate(id, { ...journalData, title: title, content: content, caption: caption })
+        }
       }
       setOpen(false);
       navigate("/journal");

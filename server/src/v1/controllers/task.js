@@ -181,6 +181,32 @@ exports.getAll = async (req, res) =>{
   }
 }
 
+exports.getForCalendar = async (req, res) =>{
+  const { calendarDate } = req.params;
+  console.log("task")
+  console.log(calendarDate);
+
+  try{
+    const startDate = new Date(calendarDate);
+    startDate.setUTCHours(0, 0, 0, 0);
+
+    const endDate = new Date(calendarDate);
+    endDate.setUTCHours(23, 59, 59, 999);
+
+    console.log(startDate.toISOString());
+    console.log(endDate.toISOString());
+
+    const task = await Task.find({
+      date: { $gte: startDate.toISOString(), $lt: endDate.toISOString() },
+    });
+
+    console.log(task);
+    res.status(201).json(task);
+  } catch(err) {
+      res.status(500).json(err)
+  }
+}
+
 exports.getUpcoming = async (req, res) =>{
   const sectionId = req.query.sectionId;
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // Get the local time zone identifier

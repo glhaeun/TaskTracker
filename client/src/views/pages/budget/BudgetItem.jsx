@@ -1,27 +1,56 @@
-// rrd imports
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import budgetApi from "../../../api/budgetApi";
 
-// library imports
 import { IconTrash } from '@tabler/icons-react';
 
-// helper functions
 import {
-  calculateSpentByBudget,
   formatCurrency,
   formatPercentage,
 } from "./Helpers";
 import { Button } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const BudgetItem = ({ budget, showDelete = false, onDeleteClick }) => {
-  const navigate = useNavigate();
 
-  const { id, name, amount, color } = budget;
+  const { _id, name, amount, color } = budget;
+  const [totalExpenses, setTotalExpenses] = useState(0);
+
+  const fetchData = async(budget)=> {
+    const budgetId = budget._id
+    const result = await budgetApi.getOne(budgetId);
+    const calculatedExpenses = calculateTotalExpenses(result);
+    setTotalExpenses(calculatedExpenses);
+    console.log('Total expenses amount:', totalExpenses);
+  }
+
+  useEffect(()=> {
+    fetchData(budget);
+  }, [budget])
+
+
+
+  const calculateTotalExpenses = (data) => {
+    let totalAmount = 0;
+
+    if (data && data.expenses && Array.isArray(data.expenses)) {
+        totalAmount = data.expenses.reduce((total, expense) => {
+            if (expense.amount && typeof expense.amount === 'number') {
+                return total + expense.amount;
+            }
+            return total; 
+        }, 0);
+    } else if (data && data.amount && typeof data.amount === 'number') {
+        totalAmount += data.amount;
+    }
+
+    return totalAmount;
+};
+
   
-  const spent = calculateSpentByBudget(id);
+  
 
   const handleDeleteClick = () => {
-    onDeleteClick(id);
+    onDeleteClick(_id);
     console.log("first")
     navigate('/budget')
   };
@@ -37,12 +66,12 @@ const BudgetItem = ({ budget, showDelete = false, onDeleteClick }) => {
         <h3>{name}</h3>
         <p>{formatCurrency(amount)} Budgeted</p>
       </div>
-      <progress max={amount} value={spent}>
-        {formatPercentage(spent / amount)}
+      <progress max={amount} value={totalExpenses}>
+        {formatPercentage(totalExpenses / amount)}
       </progress>
       <div className="progress-text">
-        <small>{formatCurrency(spent)} spent</small>
-        <small>{formatCurrency(amount - spent)} remaining</small>
+        <small>{formatCurrency(totalExpenses)} spent</small>
+        <small>{formatCurrency(amount - totalExpenses)} remaining</small>
       </div>
       {showDelete ? (
         <Button onClick={handleDeleteClick}>
@@ -50,7 +79,10 @@ const BudgetItem = ({ budget, showDelete = false, onDeleteClick }) => {
         </Button>
       ) : (
         <div className="flex-sm">
-          <Link to={`/budget/${id}`} className="btn">
+          <Link to={{
+              pathname: `/budget/${_id}`,
+              state: { budget }
+            }} className="btn">
             <span>View Details</span>
             <IconTrash width={20} />
           </Link>

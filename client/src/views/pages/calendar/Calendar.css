@@ -38,6 +38,10 @@ td{
     border-radius: 5px;
 }
 
+.fc-daygrid-day-events a {
+    border-radius: 5px ;
+}
+
 .fc-event-main-frame {
     color: black;
 }
@@ -46,7 +50,6 @@ td{
     border-radius: 5px;
 }
 
-/* CSS for event-tooltip popover */
 .event-tooltip {
     position: absolute;
     background-color: #fff;
@@ -54,18 +57,16 @@ td{
     border: 1px solid #ccc;
     padding: 10px;
     max-width: 300px;
-    z-index: 1000; /* Ensure it appears on top of other elements */
+    z-index: 1000; 
     font-size: 14px;
   }
   
-  /* CSS for the event title */
   .event-tooltip strong {
     font-weight: bold;
     font-size: 16px;
     margin-bottom: 5px;
   }
   
-  /* CSS for event time information */
   .event-tooltip p {
     margin: 0;
   }

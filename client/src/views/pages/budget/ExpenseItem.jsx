@@ -8,19 +8,16 @@ import { IconTrash } from "@tabler/icons-react";
 import {
   formatCurrency,
   formatDateToLocaleString,
-  getAllMatchingItems,
 } from "./Helpers";
 
-import {  dummyBudget, dummyExpenses } from './dummy'; // Update the path to your dummy data file
 import budgetApi from "../../../api/budgetApi";
 import { useEffect, useState } from "react";
 
-const ExpenseItem = ({ expense, showBudget }) => {
+const ExpenseItem = ({ expense, showBudget, fetchData }) => {
   const [budget, setBudget] = useState([])
   console.log(expense)
-  // const budget = getAllMatchingItems(dummyBudget, 'id', expense.budgetId)[0];
 
-  const fetchData = async() => {
+  const fetchingData = async() => {
     try{
       const budgetId = expense.budgetId
       const budget = await budgetApi.getOne(budgetId);
@@ -31,9 +28,20 @@ const ExpenseItem = ({ expense, showBudget }) => {
   }
 
   useEffect(()=> {
-    fetchData()
+    fetchingData()
   },[])
   console.log("hey", budget)
+
+  const handleDelete = async () => {
+    try {
+      const result = await budgetApi.deleteExpense(budget._id, expense._id)
+      fetchData()
+      console.log('Expense deleted!', result);
+    } catch (err){
+      console.log(err)
+    }
+  };
+
 
   return (
     <>
@@ -52,8 +60,8 @@ const ExpenseItem = ({ expense, showBudget }) => {
           </Link>
         </td>
       )}
-      <td>
-      <IconTrash width={20} />
+      <td onClick={handleDelete}>
+        <IconTrash width={20} />
       </td>
     </>
   );

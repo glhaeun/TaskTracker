@@ -1,9 +1,9 @@
 // component import
 import ExpenseItem from "./ExpenseItem";
 
-const Table = ({ expenses, showBudget = true }) => {
+const Table = ({ expenses, showBudget = true, fetchData }) => {
   return (
-    <div className="table">
+    <div className="table" id="table">
       <table>
         <thead>
           <tr>
@@ -17,7 +17,7 @@ const Table = ({ expenses, showBudget = true }) => {
         <tbody>
           {expenses.map((expense) => (
             <tr key={expense._id}>
-              <ExpenseItem expense={expense} showBudget={showBudget} />
+              <ExpenseItem expense={expense} showBudget={showBudget} fetchData={fetchData} />
             </tr>
           ))}
         </tbody>

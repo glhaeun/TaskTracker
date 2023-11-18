@@ -1,4 +1,4 @@
-import { NotesContainer } from "../views/pages/qnote/style";
+import { NotesContainer } from "../views/pages/finalNotes/style";
 
 import { NoteCard } from "../component";
 

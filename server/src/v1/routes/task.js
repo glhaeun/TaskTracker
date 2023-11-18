@@ -57,6 +57,12 @@ router.get(
   taskController.getUpcoming
 )
 
+router.get(
+  '/:calendarDate',
+  tokenHandler.verifyToken,
+  taskController.getForCalendar
+)
+
 router.delete(
   '/:taskId',
   param('boardId').custom(value => {

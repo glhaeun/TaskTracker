@@ -1,42 +1,26 @@
-// rrd imports
-import {  dummyExpenses } from './dummy'; // Update the path to your dummy data file
 
 // library import
 import { toast } from "react-toastify";
+import budgetApi from '../../../api/budgetApi';
 
 // component imports
 import Table from "./Table";
+import { useEffect, useState } from "react";
 
 // helpers
-import { deleteItem, fetchData } from "./Helpers";
 
-// loader
-export async function expensesLoader() {
-  const expenses = fetchData("expenses");
-  return { expenses };
-}
-
-// action
-export async function expensesAction({ request }) {
-  const data = await request.formData();
-  const { _action, ...values } = Object.fromEntries(data);
-
-  if (_action === "deleteExpense") {
-    try {
-      deleteItem({
-        key: "expenses",
-        id: values.expenseId,
-      });
-      return toast.success("Expense deleted!");
-    } catch (e) {
-      throw new Error("There was a problem deleting your expense.");
-    }
-  }
-}
 
 const ExpensesPage = () => {
-  const  expenses  = dummyExpenses
-  console.log(expenses)
+  const [expenses, setExpenses] = useState([]);
+
+  const fetchData = async()=> {
+    const result = await budgetApi.getAllExpenses();
+    setExpenses(result)
+  }
+
+  useEffect(()=> {
+    fetchData();
+  }, [])
 
   return (
     <div className="grid-lg">
@@ -46,7 +30,7 @@ const ExpensesPage = () => {
           <h2>
             Recent Expenses <small>({expenses.length} total)</small>
           </h2>
-          <Table expenses={expenses} />
+          <Table expenses={expenses} fetchData={fetchData} />
         </div>
       ) : (
         <p>No Expenses to show</p>
