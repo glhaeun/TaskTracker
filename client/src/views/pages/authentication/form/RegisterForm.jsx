@@ -79,7 +79,7 @@ const RegisterForm = ({ ...others }) => {
       });
       toast.success("Registered Success !", {
         position: "bottom-right",
-        autoClose: 2500,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -99,7 +99,7 @@ const RegisterForm = ({ ...others }) => {
         if (emailError) {
           toast.error("Email Registered !", {
             position: "bottom-right",
-            autoClose: 2000,
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -108,7 +108,6 @@ const RegisterForm = ({ ...others }) => {
             theme: "dark",
           });
         }
-
         setStatus({ success: false });
         setSubmitting(false);
       }
