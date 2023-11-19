@@ -5,6 +5,7 @@ const budgetApi = {
     getAll : () => axiosClient.get('budget'),
     getAllExpenses : () => axiosClient.get('budget/expenses'),
     delete: (budgetId) => axiosClient.delete(`budget/${budgetId}`),
+    deleteExpense: (budgetId, expenseId) => axiosClient.delete(`budget/${budgetId}/${expenseId}`),
     getOne : (budgetId) => axiosClient.get(`budget/${budgetId}`),
     addExpenses: (budgetId, params) => axiosClient.put(`budget/${budgetId}`, params),
 }

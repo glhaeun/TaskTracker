@@ -21,25 +21,16 @@ const calendarSchema = new Schema({
         type: Date,
         required: true,
     },
-      description: {
+    description: {
         type: String,
         required: false,
     },
     allDay: {
       type: Boolean,
     },
-    description: {
-      type: String
-    },
     color: {
       type: String,
-    }, 
-    recurrence: {
-      frequency: String, 
-      interval: Number, 
-      endDate: Date, 
-    },
-
+    }
 }, schemaOptions)
 
 module.exports = mongoose.model('Calendar', calendarSchema)

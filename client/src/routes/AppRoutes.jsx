@@ -1,13 +1,9 @@
 import { lazy } from 'react';
 import Loadable from "../component/Loadable";
+import { Navigate } from 'react-router-dom';
 
 import MainLayout from '../layouts/MainLayout';
 import PrivateRoute from './PrivateRoutes';
-// import {
-//   QuickNotes,
-//   ArchiveNotes,
-//   DeletedNotes
-// } from "../views/pages/qnote/index";
 
 import {
   QuickNotes,
@@ -22,12 +18,8 @@ import BudgetPage from '../views/pages/budget/BudgetPage';
 import ExpensesPage from '../views/pages/budget/ExpensesPage';
 
 const ToDo2 = Loadable(lazy(()=> import('../views/pages/finalTodo')))
-
-// const ToDo = Loadable(lazy(()=> import('../views/pages/kanbanTes')))
-const Main = Loadable(lazy(()=> import('../views/pages/todo/main')))
-const Journal = Loadable(lazy(()=> import('../views/pages/journalTes')))
+const Error = Loadable(lazy(()=> import('../views/error')))
 const Journal2 = Loadable(lazy(()=> import('../views/pages/finalJournal')))
-
 
 
 
@@ -37,7 +29,7 @@ const AppRoutes = {
     children: [
       {
         path: '/',
-        element: <PrivateRoute element={<Calendar />} />
+        element: <PrivateRoute element={<ToDo2 />} />
       },
       {
         path: 'todo',
@@ -82,7 +74,7 @@ const AppRoutes = {
             element: <PrivateRoute element={<BudgetDashboard />} />,
           },
           {
-            path: ':budgetId', // Match /budget/:budgetId
+            path: ':budgetId', 
             element: <PrivateRoute element={<BudgetPage />} />,
           },
           {
@@ -91,7 +83,21 @@ const AppRoutes = {
           }
         ],
       },
+      {
+        path: 'calendar',
+        children: [
+          {
+            path: '/calendar',
+            element: <PrivateRoute element={<Calendar />} />,
+          }
+        ],
+      },
+      {
+        path: '*',
+        element: <PrivateRoute element={<Error />} />,
+      },
     ],
+    
   };
   
 

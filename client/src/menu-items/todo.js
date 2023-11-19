@@ -1,5 +1,4 @@
 import { IconDashboard } from '@tabler/icons-react';
-import ToDo from '../views/pages/kanban';
 
 const icons = { IconDashboard };
 

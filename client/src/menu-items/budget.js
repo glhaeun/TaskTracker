@@ -1,8 +1,8 @@
 // assets
-import { IconKey } from '@tabler/icons-react';
+import { IconEyeDollar } from '@tabler/icons-react';
 
 // constant
-const icons = { IconKey };
+const icons = { IconEyeDollar };
 
 
 const dashboard = {
@@ -15,7 +15,7 @@ const dashboard = {
       title: 'budget',
       type: 'item',
       url: '/budget',
-      icon: icons.IconDashboard,
+      icon: icons.IconEyeDollar,
       breadcrumbs: false
     }
   ]

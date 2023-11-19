@@ -115,7 +115,7 @@ p {
   
   /* links and buttons */
   
-  :where(a, .btn) {
+  :where(.btn) {
     --color: hsl(var(--text));
     --backdrop: hsl(var(--accent));
     font: inherit;
@@ -134,11 +134,11 @@ p {
       -webkit-box-shadow 300ms cubic-bezier(0.075, 0.82, 0.165, 1);
   }
   
-  :where(a, .btn):focus {
+  :where(.btn):focus {
     outline: none;
   }
   
-  :where(a, .btn):is(:hover, :focus-visible) {
+  :where(.btn):is(:hover, :focus-visible) {
     -webkit-box-shadow: 0 0 0 3px hsl(var(--bkg)), 0 0 0 6px var(--backdrop);
     box-shadow: 0 0 0 3px hsl(var(--bkg)), 0 0 0 6px var(--backdrop);
   }
@@ -415,34 +415,34 @@ p {
     overflow-x: auto;
   }
   
-  table {
+  #table table {
     width: 100%;
   }
   
-  tr:nth-child(odd) {
+  #table  tr:nth-child(odd) {
     background-color: hsl(var(--accent) / 0.04);
   }
   
-  td {
+  #table  td {
     border: none;
     font-size: var(--fs-200);
   }
   
-  thead > tr:nth-child(odd) {
+  #table  thead > tr:nth-child(odd) {
     background-color: hsl(var(--bkg));
   }
   
-  td,
-  th {
+  #table  td,
+  #table th {
     text-align: center;
     padding: var(--space-xs);
   }
   
-  table .btn {
+  #table  table .btn {
     margin-inline: auto;
   }
   
-  table a {
+  #table  table a {
     text-decoration: none;
     color: hsl(var(--bkg));
     background-color: hsl(var(--accent));

@@ -11,7 +11,7 @@ import {
   TagsBox,
   FooterBox,
 } from "./NoteCard.styles";
-import { NotesIconBox } from "../../views/pages/qnote/style";
+import { NotesIconBox } from "../../views/pages/finalNotes/style";
 
 //redux
 import { useDispatch } from "react-redux";

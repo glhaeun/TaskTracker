@@ -1,11 +1,11 @@
 // assets
-import { IconKey } from '@tabler/icons-react';
+import { IconBook } from '@tabler/icons-react';
 
 // constant
-const icons = { IconKey };
+const icons = { IconBook };
 
 
-const dashboard = {
+const journal = {
   id: 'journal',
   title: 'Journal',
   type: 'group',
@@ -15,10 +15,10 @@ const dashboard = {
       title: 'Journal',
       type: 'item',
       url: '/journal',
-      icon: icons.IconDashboard,
+      icon: icons.IconBook,
       breadcrumbs: false
     }
   ]
 };
 
-export default dashboard;
+export default journal;

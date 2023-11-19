@@ -46,7 +46,6 @@ exports.create = async (req,res) => {
 }
 
 exports.getAll = async (req, res) =>{  
-    console.log("hello world")
     try{
         const budget = await Budget.find({user: req.user._id})
         console.log(budget)
@@ -88,7 +87,7 @@ exports.getAllExpenses = async (req, res) => {
       res.status(500).json(err);
     }
   };
-  
+
 
   exports.delete = async (req, res) => {
     const {budgetId} = req.params
@@ -100,16 +99,35 @@ exports.getAllExpenses = async (req, res) => {
         }
     }
 
+    exports.deleteExpense = async (req, res) => {
+      const { budgetId, expenseId } = req.params;
+      console.log(budgetId)
+      console.log(expenseId)
+      try {
+        const budget = await Budget.findById(budgetId);
+
+        if (!budget) {
+          return res.status(404).json({ message: 'Budget not found' });
+        }
+        budget.expenses = budget.expenses.filter(
+          (expense) => expense._id.toString() !== expenseId
+        );
+    
+        await budget.save();
+    
+        res.status(200).json('Expense deleted');
+          } catch (error) {
+              res.status(500).json(error)
+          }
+      }
+
+    
+
     exports.getOne = async (req, res) =>{  
-      console.log("hi")
         const {budgetId} = req.params
-        console.log(budgetId)
-        console.log("hi")
         try{
-            console.log("im here")
             const budget = await Budget.findOne({_id: budgetId})
             res.status(201).json(budget)
-            console.log(budget)
         } catch(err) {
             res.status(500).json(err)
         }

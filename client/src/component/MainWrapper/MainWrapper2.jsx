@@ -1,5 +1,5 @@
 //styles
-import { NotesContainer } from "../../views/pages/qnote/style";
+import { NotesContainer } from "../../views/pages/finalNotes/style";
 
 //component
 import NoteCard from "../NoteCard/NoteCard2";

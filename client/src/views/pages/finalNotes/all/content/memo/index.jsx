@@ -1,5 +1,6 @@
-import { startTransition, useEffect, useState } from "react";
-
+import {  useEffect, useState } from "react";
+import emptyImg from '../../../../../img/empty.svg';
+import { Link } from 'react-router-dom';
 //styles
 import {
   Container,
@@ -10,7 +11,7 @@ import { Box, Header, Controls, Username, Text } from "./styles";
 
 //reddux
 import { useDispatch, useSelector } from "react-redux";
-import { toggleCreateNoteModal, toggleFiltersModal } from "../../../../../../redux/featuresNotes";
+import {  toggleFiltersModal } from "../../../../../../redux/featuresNotes";
 
 //components
 import { CreateNoteModal, FiltersModal, NoteCard } from "../../../../../../component/finalNotes";
@@ -34,8 +35,6 @@ const AllNotes = () => {
   //getting path
   const location = useLocation();
   const { pathname, state } = location;
-
-  const { viewCreateNoteModal } = useSelector((state) => state.modal);
 
   useEffect(() => {
     fetchNotes();
@@ -107,17 +106,6 @@ const AllNotes = () => {
     });
   };
 
-  const updateNoteArchive = (noteId, isArchive) => {
-    setNotes((prevNotes) => {
-      return prevNotes.map((note) => {
-        if (note.id === noteId) {
-          return { ...note, isArchive };
-        }
-        return note;
-      });
-    });
-  };
-
   return (
     <Container>
       {/* filter modal */}
@@ -130,7 +118,36 @@ const AllNotes = () => {
       )}
       {/* notes */}
       {notes.length === 0 ? (
-        <EmptyMsgBox>There are no notes</EmptyMsgBox>
+        <>
+        {viewCreateModal && <CreateNoteModal mode="Create" onClose={handleClose}
+                 fetchNotes={fetchNotes}/>}
+        <Box sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'column'
+        }}>
+          <Box sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+          }}>
+            <img src={emptyImg} alt='errorimg' />
+            <Box sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+          }}>
+              <h1 style={{
+                  color: 'var(--white-color)',
+                  margin: '3rem 0 2rem 0',
+                  fontSize: '2rem'
+              }}>There are no notes</h1>
+                <Button onClick={handleClick} >Click here to add notes</Button> 
+            </Box>
+          </Box>
+        </Box>
+      </>
       ) : (
         <>
       <AppBar position="static" color="transparent">
