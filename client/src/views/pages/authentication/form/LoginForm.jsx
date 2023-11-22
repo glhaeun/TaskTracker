@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authApi from "../../../../api/authApi";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { useTheme } from "@mui/material/styles";
 import {
   Box,
@@ -33,6 +33,10 @@ const LoginForm = ({ ...others }) => {
     setShowPassword(!showPassword);
   };
 
+  const handleToastClose = () => {
+    navigate("/");
+  };
+
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
@@ -47,9 +51,18 @@ const LoginForm = ({ ...others }) => {
       console.log(res.token);
       localStorage.setItem("token", res.token);
       setStatus({ success: true });
-      toast.success("Login Success !");
+      toast.success("Login Success !", {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        onClose: handleToastClose,
+      });
       setSubmitting(false);
-      navigate("/");
     } catch (err) {
       if (err.data && err.data.errors) {
         const errors = err.data.errors;
@@ -88,7 +101,18 @@ const LoginForm = ({ ...others }) => {
           </Box>
         </Grid>
       </Grid>
-
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <Formik
         initialValues={{
           submit: null,
@@ -98,7 +122,10 @@ const LoginForm = ({ ...others }) => {
             .email("Must be a valid email")
             .max(255)
             .required("Email is required"),
-          password: Yup.string().max(255).min(8, "Password must be at least 8 characters").required("Password is required"),
+          password: Yup.string()
+            .max(255)
+            .min(8, "Password must be at least 8 characters")
+            .required("Password is required"),
         })}
         onSubmit={handleSubmit}
       >
