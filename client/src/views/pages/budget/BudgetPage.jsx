@@ -46,6 +46,7 @@ const BudgetPage = () => {
   }, []);
 
   const onDeleteClick = async () => {
+    //delete budget
     try{
       await budgetApi.delete(budgetId);
     } catch(error) {

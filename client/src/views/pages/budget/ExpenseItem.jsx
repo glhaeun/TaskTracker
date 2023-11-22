@@ -33,6 +33,7 @@ const ExpenseItem = ({ expense, showBudget, fetchData }) => {
   console.log("hey", budget)
 
   const handleDelete = async () => {
+    //delete expense
     try {
       const result = await budgetApi.deleteExpense(budget._id, expense._id)
       fetchData()

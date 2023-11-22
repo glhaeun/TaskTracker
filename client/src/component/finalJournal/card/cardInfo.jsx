@@ -6,6 +6,7 @@ import { removeJournal } from "../../../redux/featuresJournal/journal/tesSlice";
 import Chip from "../../extended/Chips";
 import "./styleCardInfo.css"
 import journalApi from '../../../api/journalApi';
+import { ToastContainer, toast } from "react-toastify";
 
 
 const JournalInfo = (props) => {
@@ -17,7 +18,7 @@ const JournalInfo = (props) => {
   const formattedDate = date.toLocaleString();
 
   const formatDate = date.toISOString().split('T')[0];
-
+ 
   
   const [openDrawer, setOpenDrawer] = useState(false);
   const [image, setImage] = useState(null);
@@ -36,17 +37,8 @@ const JournalInfo = (props) => {
   };
 
 
-  const handleDeleteJournal = async (journalId) => {
-    try {
-      console.log(journalId)
-      await journalApi.delete(journalId)
-      
-      // const newData = [...data].filter(e => e.id !== boardId)
-      // setData(newData)
-      props.deleteJournal(journalId);
-    } catch(err) {
-      console.log(err)
-    }
+  const handleDeleteJournal =  (journalId) => {
+    props.deleteJournal(journalId);
   }
 
 
@@ -97,7 +89,19 @@ const JournalInfo = (props) => {
           <Button onClick={setUpdatePage}>
             <IconEdit />
           </Button>
-          <Button onClick={() => handleDeleteJournal(journal.id)}>
+          <Button 
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent click event propagation
+            props.setConfirmDialog({
+              isOpen: true,
+              title: "Are you sure to delete this task?",
+              subtitle: "You can't undo this operation!",
+              onConfirm: ()=> {handleDeleteJournal(journal.id)}
+            })
+            
+          }}
+          // onClick={() => handleDeleteJournal(journal.id)}
+          >
             <IconCircleMinus />
           </Button>
         </div>

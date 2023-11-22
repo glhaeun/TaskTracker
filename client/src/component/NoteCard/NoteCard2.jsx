@@ -1,6 +1,5 @@
 import parse from "html-react-parser";
-import { IconTrash , IconArchive, IconRestore, IconEdit} from "@tabler/icons-react";
- 
+import { ToastContainer } from "react-toastify";
 
 //styles
 import {  
@@ -22,7 +21,8 @@ import { CreateNoteModal } from "../finalNotes";
 import notesApi from "../../api/notesApi";
 import Footer from "./Footer";
 
-const NoteCard = ({ note, type , fetchNotes}) => {
+const NoteCard = ({ note, type , fetchNotes, handleToast}) => {
+  console.log(handleToast)
   const { title, content, tags, color, priority, date, isPinned, id, isArchive, isDeleted } =
   note;
 
@@ -36,7 +36,6 @@ const month = String(parsedDate.getMonth() + 1).padStart(2, '0'); // Months are 
 const year = parsedDate.getFullYear();
 
 const formattedDate = `${day}/${month}/${year}`;
-console.log(formattedDate);
   
 
   const func = () => {
@@ -55,8 +54,6 @@ console.log(formattedDate);
   }
 
   const pinNoteHandler = async(id, isPinned) => {
-    console.log(id)
-    console.log(isPinned)
     await notesApi.setPinned(id, {isPinned: !isPinned});
     fetchNotes()
   }
@@ -101,14 +98,12 @@ console.log(formattedDate);
         <FooterBox>
           <div className="noteCard__date">{formattedDate}</div>
           <div>
-          <Footer type={type} fetchNotes={fetchNotes} isEditing={isEditing} note={note} setIsEditing={setIsEditing} >
+          <Footer type={type} handleToast={handleToast} fetchNotes={fetchNotes} isEditing={isEditing} note={note} setIsEditing={setIsEditing} >
           </Footer>
           </div>
         </FooterBox>
       </Card>
       {isEditing && (
-        // Conditionally render CreateNoteModal in "Edit" mode
-        // Pass the note information using the editnote prop
         <CreateNoteModal
           mode="Edit"
           editNote={note}

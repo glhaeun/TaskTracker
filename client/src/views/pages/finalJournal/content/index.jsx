@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, InputBase, Button, AppBar, Toolbar } from "@mui/material";
 import styled from 'styled-components';
+import { ToastContainer, toast } from "react-toastify";
 
 
 import DialogBox from "../../../../component/Journal/card/DialogBox";
@@ -10,6 +11,7 @@ import { IconPlus, IconSearch } from "@tabler/icons-react";
 import JournalList from "../../../../component/finalJournal/card/cardList";
 import JournalModal from './../../../../component/finalJournal/card/JournalModal';
 import journalApi from "../../../../api/journalApi";
+import ConfirmDialog from "../../../../component/ConfirmDialog";
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,6 +28,7 @@ const HomePage = () => {
   const [journalListData, setJournalListData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(""); // State to store the selected category
   const uniqueCategoriesSet = new Set();
+  const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subtitle: ''})
 
 
   useEffect(()=> {
@@ -38,7 +41,7 @@ const HomePage = () => {
       }
     };
     fetchJournalData();
-  },[]);
+  },[searchTerm]);
 
 
   journalListData.forEach(journal => {
@@ -72,18 +75,60 @@ const HomePage = () => {
     }
   };
 
-  const addJournalHandler = (newJournal) => {
-    const updatedJournalData = [...journalListData, newJournal];
-    console.log(updatedJournalData)
-    setJournalListData(updatedJournalData)
+
+  const addJournalHandler = async (journalData) => {
+    try {
+      //create Journal
+      const newJournal = await journalApi.create({journalData});
+      console.log('Journal created:', newJournal);
+      const updatedJournalData = [...journalListData, newJournal];
+      setJournalListData(updatedJournalData)  
+    } catch (error) {
+      console.error('Error creating journal:', error);
+    }
   }
 
-  const deleteJournalHandler = (journalId) => {
-    const newJournalData = [...journalListData].filter(e => e.id !== journalId)
-    setJournalListData(newJournalData)
+  const deleteJournalHandler = async (journalId) => {
+    //delete Journal
+    setConfirmDialog({
+      ...confirmDialog,
+      isOpen: false
+    })
+    try {
+      console.log(journalId)
+      await journalApi.delete(journalId)
+      const newJournalData = [...journalListData].filter(e => e.id !== journalId)
+      setJournalListData(newJournalData)
+    } catch(err) {
+      console.log(err)
+    }
+    
   }
   
+  const searchResult = () => {
+    let filteredData = [...journalListData]; // Create a copy to avoid modifying the original state
 
+    if (searchTerm !== "") {
+      filteredData = filteredData.filter((item) => {
+        if (item.title && typeof item.title === 'string') {
+          return item.title.toLowerCase().includes(searchTerm);
+        }
+        return false;
+      });
+    }
+
+    if (filteredData.length > 0) {
+      return (
+        <Box p={4}>
+          <JournalList journal={filteredData} setConfirmDialog={setConfirmDialog} deleteJournal={deleteJournalHandler} journalUpdate={journalUpdate} />
+        </Box>
+      );
+    } else {
+      return <EmptyMsgBox>No Results Found</EmptyMsgBox>;
+    }
+  };
+
+  
   const filterJournalData = (input) => {
     console.log(journalListData)
     const filteredData = journalListData.filter((item) => {
@@ -98,6 +143,7 @@ const HomePage = () => {
   }
 
   const journalUpdate = async (journalId, journal) => {
+    //update journal
     try {
       await journalApi.update(journalId, { journal });
   
@@ -120,13 +166,14 @@ const HomePage = () => {
     <Wrapper>
     <div className="flex flex-col w-screen h-screen overflow-auto text-gray-700 bg-gradient-to-tr from-green-200 via-indigo-200 to-pink-200">
       <AppBar position="static" color="transparent" className="hello">
-        <Toolbar>
+        <Toolbar >
         <InputBase
           className="flex items-center h-10 px-4 ml-10 text-sm w-full bg-gray-200 rounded-full"
           placeholder="Search Final Journal …"
           inputProps={{ "aria-label": "search" }}
           onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
           startAdornment={<IconSearch />}
+          value={searchTerm}
         />
           <select value={selectedCategory} onChange={handleCategoryChange}>
               <option value="All">All Categories</option>
@@ -148,9 +195,12 @@ const HomePage = () => {
           {/* Add profile picture button */}
         </Toolbar>
       </AppBar>
-      <Box p={4}>
-          <JournalList journal={journalListData} deleteJournal={deleteJournalHandler} journalUpdate={journalUpdate}/>
+      {searchTerm !== "" ? searchResult() : (
+        <Box p={4}>
+        
+          <JournalList journal={journalListData} deleteJournal={deleteJournalHandler} journalUpdate={journalUpdate} setConfirmDialog = {setConfirmDialog}/>
         </Box>
+      )}
       {open && (
         <DialogBox open={open} OnDialogHandle={dialogHandle}>
         <JournalModal id={""} addJournal={addJournalHandler} />
@@ -158,7 +208,23 @@ const HomePage = () => {
         </DialogBox>
       )}
     </div>
+    <ConfirmDialog 
+    confirmDialog={confirmDialog}
+    setConfirmDialog = {setConfirmDialog}/>
+    <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </Wrapper>
+    
   );
 };
 

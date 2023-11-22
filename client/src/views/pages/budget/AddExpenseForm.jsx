@@ -39,7 +39,7 @@ const AddExpenseForm = ({ budgets, fetchData }) => {
     console.log(newExpenseBudget)
 
     try {
-      // Perform your form submission here
+  
       const formData = new FormData();
       formData.append("newExpense", newExpense);
       formData.append("newExpenseAmount", newExpenseAmount);
@@ -54,18 +54,18 @@ const AddExpenseForm = ({ budgets, fetchData }) => {
         budgetId: newExpenseBudget,
         createdAt: new Date()
       }
+
+      // add expense
       const budgetId = newExpenseBudget
       await budgetApi.addExpenses(budgetId, {expenses: [...expense, newData]})
 
       console.log(expense);
       fetchData();
-      // Reset form and set state after successful submission
       setNewExpense("");
       setNewExpenseAmount("");
       setNewExpenseBudget(budgets.length === 1 ? budgets[0].id : "");
       setIsSubmitting(false);
     } catch (error) {
-      // Handle any submission errors here
       setIsSubmitting(false);
     }
   };

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { X } from "react-feather";
-import SubCard from "../../component/cards/SubCard";
 
 import { Button } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
@@ -46,7 +45,7 @@ function CustomInput(props) {
           />
           <div className="custom-input-edit-footer">
             <Button variant="outlined" startIcon={<AddIcon/>} type="submit">{buttonText || "Add"}</Button>
-            <X onClick={() => setIsCustomInput(false)} className="closeIcon" />
+            <Button variant="outlined" startIcon={<X/>} onClick={() => setIsCustomInput(false)} >Cancel</Button>
           </div>
         </form>
       ) : (

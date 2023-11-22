@@ -34,14 +34,14 @@
     display: flex;
     gap: 8px;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: flex-start;
   }
   
   .custom-input-edit-footer button {
     cursor: pointer;
     border-radius: 5px;
     outline: none;
-    background-color: #0079bf;
+    background-color: #29314f;
     color: #fff;
     border: none;
     transition: 100ms ease;

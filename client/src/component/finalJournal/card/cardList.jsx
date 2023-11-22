@@ -4,7 +4,7 @@ import DialogBox from "./DialogBox";
 import { Grid } from "@mui/material";
 import JournalModal from './JournalModal';
 
-const JournalList = ({ journal ,deleteJournal, journalUpdate}) => {
+const JournalList = ({ journal ,deleteJournal, journalUpdate, setConfirmDialog}) => {
   const [open, setOpen] = useState(false);
   const [id, setID] = useState(null);
 
@@ -23,7 +23,13 @@ const JournalList = ({ journal ,deleteJournal, journalUpdate}) => {
         {journal &&
           journal.map((entry) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={entry.id} style={{ minWidth: '250px' }}>
-              <JournalInfo id={entry.id} journal={entry} onJournalUpdate={JournalUpdate} deleteJournal={deleteJournal} />
+              <JournalInfo 
+              id={entry.id} 
+              journal={entry} 
+              onJournalUpdate={JournalUpdate} 
+              deleteJournal={deleteJournal} 
+              setConfirmDialog={setConfirmDialog} // Pass setConfirmDialog here
+              />
             </Grid>
           ))}
       </Grid>

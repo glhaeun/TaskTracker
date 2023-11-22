@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Form } from "react-router-dom";
 import { Icon123 } from '@tabler/icons-react';
 import budgetApi from "../../../api/budgetApi";
+import { ToastContainer, toast } from "react-toastify";
 
 const AddBudgetForm = ({fetchData}) => {
   const [newBudget, setNewBudget] = useState("");
@@ -23,19 +24,29 @@ const AddBudgetForm = ({fetchData}) => {
     setIsSubmitting(true);
 
     try {
-      // Perform your form submission here
       const formData = new FormData();
       formData.append("newBudget", newBudget);
       formData.append("newBudgetAmount", newBudgetAmount);
       formData.append("_action", "createBudget");
 
-      // Replace the following with your actual submission logic
       const budget = {
         name : newBudget,
         amount: newBudgetAmount
       }
       await budgetApi.create({budget})
       fetchData();
+
+      toast.success("Add Budget Success !", {
+        position: "bottom-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+
       setNewBudget("");
       setNewBudgetAmount("");
       setIsSubmitting(false);
@@ -86,6 +97,18 @@ const AddBudgetForm = ({fetchData}) => {
           )}
         </button>
       </form>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 };

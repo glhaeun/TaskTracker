@@ -2,19 +2,22 @@ import React, { useEffect, useState } from 'react'
 import { NotesIconBox } from '../../views/pages/finalNotes/style';
 import { IconTrash , IconArchive, IconRestore, IconEdit} from "@tabler/icons-react";
 import notesApi from '../../api/notesApi';
+import { toast } from "react-toastify";
 
-const Footer = ({type, fetchNotes, isEditing, setIsEditing, note}) => {
+const Footer = ({type, fetchNotes, isEditing, setIsEditing, note, handleToast}) => {
     const {id, isArchive, isDeleted} = note
-    console.log(isDeleted)
+
     const editNoteHandler = () => {
         setIsEditing(true); // Set the state to indicate that editing is requested
       };
     
       const setArchiveHandler = async(id, isArchive) => {
+
         console.log(id)
         console.log(isArchive)
         await notesApi.setArchive(id, {isArchive: !isArchive});
         fetchNotes();
+        handleToast('Archived')
       }
 
       const setDeleteHandler = async(id, isDeleted) => {
@@ -22,6 +25,7 @@ const Footer = ({type, fetchNotes, isEditing, setIsEditing, note}) => {
         console.log(isDeleted)
         await notesApi.setDelete(id, {isDeleted: !isDeleted});
         fetchNotes();
+        handleToast('Deleted')
       }
 
       const deletePermanentHandler = async(id) => {
@@ -33,6 +37,7 @@ const Footer = ({type, fetchNotes, isEditing, setIsEditing, note}) => {
 
   if (type === "notes") {
     footer = (
+      <>
       <div className="normalCard">
         <NotesIconBox data-info="Edit" onClick={editNoteHandler}>
           <IconEdit style={{ fontSize: "1rem" }} />
@@ -44,6 +49,7 @@ const Footer = ({type, fetchNotes, isEditing, setIsEditing, note}) => {
           <IconTrash />
         </NotesIconBox>
       </div>
+      </>
     );
   } else if (type === "archive") {
     footer = (

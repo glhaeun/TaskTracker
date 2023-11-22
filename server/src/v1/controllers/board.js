@@ -30,11 +30,8 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
 const {boardId} = req.params
     try {
-        const tasks = await Task.find({board: boardId})
-        for(const task of tasks) {
-            await SubTask.deleteMany({task: task.id})
-        }
         await Task.deleteMany({board: boardId})
+
         await Board.deleteOne({ _id: boardId})
         res.status(200).json('deleted')
     } catch (error) {

@@ -1,6 +1,9 @@
 import {  useEffect, useState } from "react";
 import emptyImg from '../../../../../img/empty.svg';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast} from "react-toastify";
+import { handleToast } from "./toastHelper";
+
 //styles
 import {
   Container,
@@ -106,6 +109,19 @@ const AllNotes = () => {
     });
   };
 
+  // const handleToast = () => {
+  //   toast.success("Archive Success !", {
+  //     position: "bottom-right",
+  //     autoClose: 2500,
+  //     hideProgressBar: false,
+  //     closeOnClick: true,
+  //     pauseOnHover: true,
+  //     draggable: true,
+  //     progress: undefined,
+  //     theme: "dark",
+  //   });
+  // }
+
   return (
     <Container>
       {/* filter modal */}
@@ -203,7 +219,20 @@ const AllNotes = () => {
                       {pinnedNotes.map((note) => (
                         <NoteCard key={note.id} note={note} type="notes" 
                         updateNotePinnedStatus={updateNotePinnedStatus}
-                        fetchNotes={fetchNotes}/>
+                        fetchNotes={fetchNotes}
+                        handleToast={() => {
+                          toast.success("Archive Success !", {
+                            position: "bottom-right",
+                            autoClose: 2500,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "dark",
+                          });
+                        }}
+                        />
                       ))}
                     </NotesContainer>
                   </Box>
@@ -219,7 +248,9 @@ const AllNotes = () => {
                     {normalNotes.map((note) => (
                         <NoteCard key={note.id} note={note} type="notes" 
                         updateNotePinnedStatus={updateNotePinnedStatus}
-                        fetchNotes={fetchNotes}/>
+                        fetchNotes={fetchNotes}
+                        handleToast={handleToast}
+                        />
                       ))}
                     </NotesContainer>
                   </Box>
@@ -229,6 +260,18 @@ const AllNotes = () => {
           </Box>
         </>
       )}
+      <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
     </Container>
   );
 };

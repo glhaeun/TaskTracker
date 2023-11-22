@@ -7,14 +7,15 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import ColorPicker from '../../../../calendar/colorPicker';
 
 
-const colorOptions = [
-  { name: 'Red', color: 'red' },
-  { name: 'Blue', color: 'blue' },
-  { name: 'Green', color: 'green' },
-  // Add more color options as needed
-];
+// const colorOptions = [
+//   { name: 'Red', color: 'red' },
+//   { name: 'Blue', color: 'blue' },
+//   { name: 'Green', color: 'green' },
+//   // Add more color options as needed
+// ];
 
 
 const style = {
@@ -31,7 +32,7 @@ const style = {
 
 function AddBoard({ open, onClose, onSubmit }) {
   const [boardName, setBoardName] = useState('');
-  const [selectedColor, setSelectedColor] = useState('');
+  const [colorLabel, setColorLabel] = useState('');
 
   const handleInputChange = (event) => {
     setBoardName(event.target.value);
@@ -42,10 +43,10 @@ function AddBoard({ open, onClose, onSubmit }) {
       return;
     }
 
-    onSubmit(boardName, selectedColor);
+    onSubmit(boardName, colorLabel);
 
     setBoardName('');
-    setSelectedColor('');
+    setColorLabel('');
 
     onClose();
   };
@@ -66,18 +67,8 @@ function AddBoard({ open, onClose, onSubmit }) {
           value={boardName}
           onChange={handleInputChange}
         />
-        <Select
-          label="Select Color"
-          value={selectedColor}
-          onChange={(event) => setSelectedColor(event.target.value)}
-          sx={{ width: '100%', mt: 2 }}
-        >
-          {colorOptions.map((option, index) => (
-            <MenuItem key={index} value={option.color}>
-              {option.name}
-            </MenuItem>
-          ))}
-        </Select>
+        <ColorPicker colorLabel={colorLabel} setColorLabel={setColorLabel} />
+
         <Button variant="contained" color="primary" onClick={handleSubmit} sx={{ mt: 2 }}>
           Submit
         </Button>

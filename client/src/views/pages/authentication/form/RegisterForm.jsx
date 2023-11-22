@@ -137,6 +137,8 @@ const RegisterForm = ({ ...others }) => {
           email: "",
           password: "",
           submit: null,
+          checked: false, 
+
         }}
         validationSchema={Yup.object().shape({
           name: Yup.string().min(8, "Name is too short"),
@@ -148,6 +150,9 @@ const RegisterForm = ({ ...others }) => {
             .min(8, "Password must be at least 8 characters")
             .max(255)
             .required("Password is required"),
+          checked: Yup.boolean()
+            .oneOf([true], 'Please agree to the terms and conditions') // Validation for the checkbox
+            .required('Please agree to the terms and conditions'),
         })}
         onSubmit={handleSubmit}
       >
@@ -284,8 +289,8 @@ const RegisterForm = ({ ...others }) => {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={checked}
-                      onChange={(event) => setChecked(event.target.checked)}
+                    checked={values.checked}
+                    onChange={handleChange} // Update the handler to manage Formik's values              
                       name="checked"
                       color="primary"
                     />
@@ -299,6 +304,9 @@ const RegisterForm = ({ ...others }) => {
                     </Typography>
                   }
                 />
+                    {touched.checked && errors.checked && ( // Display error message if touched and error exists
+                <FormHelperText error>{errors.checked}</FormHelperText>
+              )}
               </Grid>
             </Grid>
             {errors.submit && (
@@ -318,7 +326,7 @@ const RegisterForm = ({ ...others }) => {
                   variant="contained"
                   color="dark"
                 >
-                  Sign up
+                  <div style={{ color: "white" }}>Register</div>
                 </Button>
               </AnimateButton>
             </Box>

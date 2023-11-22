@@ -58,7 +58,7 @@ const JournalModal = ({id, addJournal, journalUpdate}) => {
     }
 
     const editContent = (newValue) => {
-        setContent(newValue); // Update the state with the new content
+        setContent(newValue); 
     }
 
 
@@ -80,14 +80,15 @@ const JournalModal = ({id, addJournal, journalUpdate}) => {
             photo: photoUrl
           }
 
-          try {
-            const response = await journalApi.create({journalData});
-            console.log('Journal created:', response);
-            const newJournal = response.data;
-            addJournal(response);
-          } catch (error) {
-            console.error('Error creating journal:', error);
-          }
+          addJournal(journalData)
+          // try {
+          //   //create Journal
+          //   const response = await journalApi.create({journalData});
+          //   console.log('Journal created:', response);
+          //   addJournal(response);
+          // } catch (error) {
+          //   console.error('Error creating journal:', error);
+          // }
 
       } else {
         if(id) {

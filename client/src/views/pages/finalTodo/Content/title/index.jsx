@@ -43,7 +43,9 @@ const Text = styled.span`
 const Controls = styled.div`
   display: flex;
   justify-items: space-evenly;
-  margin-right: 20px;
+  @media (max-width: 1050px) {
+    justify-items: space-between;
+  }
 `
 
 const Title = (props) => {
@@ -63,15 +65,10 @@ const Title = (props) => {
     console.log(boardsData)
   }
 
-  const {addBoard} = props;
+  const {addBoard, setSearchInput, searchInput} = props;
 
-  const addBoardDatabase = async (boardName, selectedColor) => {
-    try {
-      const newBoard = await boardApi.create({boardName: boardName, color: selectedColor})
-      addBoard(newBoard)
-    } catch(err) {
-      console.log(err)
-    }
+  const addBoardDatabase = (boardName, selectedColor) => {
+    addBoard(boardName, selectedColor)
   }
 
   const handleOpen = () => {
@@ -100,10 +97,10 @@ const Title = (props) => {
       <Controls>
       <InputBase
                 placeholder="Search boards"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
               />
-        <Button sx={{marginRight:'20px'}} startIcon={<AddIcon/>} onClick={handleOpen}>Add Section</Button>
+        <Button    onClick={handleOpen}><AddIcon/></Button>
       </Controls>
     </Toolbar>
     </AppBar>
