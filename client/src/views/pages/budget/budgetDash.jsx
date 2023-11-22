@@ -14,6 +14,7 @@ import './style.css'
 
 import { useEffect, useState } from "react";
 import budgetApi from "../../../api/budgetApi";
+import Title from "./title";
 
 // loader
 
@@ -35,10 +36,8 @@ const Dashboard = () => {
   
   return (
     <>
-        <div className="dashboard">
-          <h1>
-            Welcome back, <span className="accent">{userName}</span>
-          </h1>
+        <div className="dashboard" style={{padding: '40px'}}>
+          <Title></Title>
           <div className="grid-sm">
             {budgets && budgets.length > 0 ? (
               <div className="grid-lg">
