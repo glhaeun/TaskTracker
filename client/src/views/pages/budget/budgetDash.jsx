@@ -1,5 +1,5 @@
 // rrd imports
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // library imports
 import { toast } from "react-toastify";

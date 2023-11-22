@@ -7,39 +7,38 @@ import BudgetItem from "./BudgetItem";
 import Table from "./Table";
 
 // helpers
-import { useParams  } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import budgetApi from '../../../api/budgetApi';
-
-
+import budgetApi from "../../../api/budgetApi";
 
 async function fetchData(budgetId, setBudget, setExpenses, setCheckBudget) {
   try {
-    console.log(budgetId)
+    console.log(budgetId);
     const result = await budgetApi.getOne(budgetId);
     setBudget(result);
     if (result) {
       setExpenses(result.expenses || []); // Adjust based on your API response structure
     }
-    console.log("first")
-    setCheckBudget(true)
+    console.log("first");
+    setCheckBudget(true);
   } catch (error) {
     console.error("Error fetching data:", error);
   }
 }
 
 const BudgetPage = () => {
+  const navigate = useNavigate();
 
   const [budget, setBudget] = useState([]);
   const [checkBudget, setCheckBudget] = useState(false);
-  const { budgetId } = useParams()
-  console.log(budgetId)
+  const { budgetId } = useParams();
+  console.log(budgetId);
 
   const [expenses, setExpenses] = useState([]);
 
   useEffect(() => {
     if (!budgetId) {
-      navigate('/budget');
+      navigate("/budget");
     }
 
     fetchData(budgetId, setBudget, setExpenses, setCheckBudget);
@@ -47,19 +46,28 @@ const BudgetPage = () => {
 
   const onDeleteClick = async () => {
     //delete budget
-    try{
+    try {
       await budgetApi.delete(budgetId);
-    } catch(error) {
-
+      toast.success("Budget Deleted !", {
+        position: "bottom-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
 
   const fetchExpenses = async () => {
     const result = await budgetApi.getAllExpenses();
     setExpenses(result);
-  }
+  };
 
-  
   return (
     <div
       className="grid-lg"
@@ -71,19 +79,27 @@ const BudgetPage = () => {
         <span className="accent">{budget.name}</span> Overview
       </h1>
       <div className="flex-lg">
-      {checkBudget != [] && (
-        <>
-          <BudgetItem budget={budget} showDelete={true} onDeleteClick={onDeleteClick} />
-          <AddExpenseForm budgets={[budget]} fetchData={fetchExpenses} />
-        </>
-      )}
+        {checkBudget != [] && (
+          <>
+            <BudgetItem
+              budget={budget}
+              showDelete={true}
+              onDeleteClick={onDeleteClick}
+            />
+            <AddExpenseForm budgets={[budget]} fetchData={fetchExpenses} />
+          </>
+        )}
       </div>
       {expenses && expenses.length > 0 && (
         <div className="grid-md">
           <h2>
             <span className="accent">{budget.name}</span> Expenses
           </h2>
-          <Table expenses={expenses} showBudget={false} fetchData={fetchExpenses}/>
+          <Table
+            expenses={expenses}
+            showBudget={false}
+            fetchData={fetchExpenses}
+          />
         </div>
       )}
     </div>

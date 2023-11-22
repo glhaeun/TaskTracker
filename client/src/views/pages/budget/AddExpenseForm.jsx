@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { IconCirclePlus } from "@tabler/icons-react";
 import budgetApi from "../../../api/budgetApi";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
+import { ToastContainer, toast } from "react-toastify";
 
 const AddExpenseForm = ({ budgets, fetchData }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -12,7 +13,6 @@ const AddExpenseForm = ({ budgets, fetchData }) => {
   const formRef = useRef();
   const focusRef = useRef();
 
-
   useEffect(() => {
     if (!isSubmitting) {
       // Clear form
@@ -21,25 +21,23 @@ const AddExpenseForm = ({ budgets, fetchData }) => {
       focusRef.current.focus();
     }
     fetchExpense(newExpenseBudget);
-      
   }, [isSubmitting, newExpenseBudget]);
 
-  const fetchExpense = async(newExpenseBudget) => {
+  const fetchExpense = async (newExpenseBudget) => {
     try {
       const res = await budgetApi.getOne(newExpenseBudget);
-      setExpense(res.expenses)
+      setExpense(res.expenses);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);    
-    console.log(newExpenseBudget)
+    setIsSubmitting(true);
+    console.log(newExpenseBudget);
 
     try {
-  
       const formData = new FormData();
       formData.append("newExpense", newExpense);
       formData.append("newExpenseAmount", newExpenseAmount);
@@ -49,17 +47,28 @@ const AddExpenseForm = ({ budgets, fetchData }) => {
 
       const newData = {
         id: newExpenseId,
-        name : newExpense,
+        name: newExpense,
         amount: newExpenseAmount,
         budgetId: newExpenseBudget,
-        createdAt: new Date()
-      }
+        createdAt: new Date(),
+      };
 
       // add expense
-      const budgetId = newExpenseBudget
-      await budgetApi.addExpenses(budgetId, {expenses: [...expense, newData]})
+      const budgetId = newExpenseBudget;
+      await budgetApi.addExpenses(budgetId, {
+        expenses: [...expense, newData],
+      });
 
-      console.log(expense);
+      toast.success("Expense Added !", {
+        position: "bottom-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       fetchData();
       setNewExpense("");
       setNewExpenseAmount("");
@@ -79,7 +88,12 @@ const AddExpenseForm = ({ budgets, fetchData }) => {
         </span>{" "}
         Expense
       </h2>
-      <form method="post" className="grid-sm" ref={formRef} onSubmit={handleSubmit}>
+      <form
+        method="post"
+        className="grid-sm"
+        ref={formRef}
+        onSubmit={handleSubmit}
+      >
         <div className="expense-inputs">
           <div className="grid-xs">
             <label htmlFor="newExpense">Expense Name</label>
@@ -136,6 +150,18 @@ const AddExpenseForm = ({ budgets, fetchData }) => {
           )}
         </button>
       </form>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 };
