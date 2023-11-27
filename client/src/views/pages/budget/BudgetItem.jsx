@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import budgetApi from "../../../api/budgetApi";
 
 import { IconTrash } from '@tabler/icons-react';
@@ -11,6 +11,7 @@ import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 
 const BudgetItem = ({ budget, showDelete = false, onDeleteClick }) => {
+  const navigate = useNavigate()
 
   const { _id, name, amount, color } = budget;
   const [totalExpenses, setTotalExpenses] = useState(0);
