@@ -36,7 +36,7 @@ const Dashboard = () => {
   
   return (
     <>
-        <div className="dashboard" style={{padding: '40px'}}>
+        <div className="dashboard" style={{padding: '40px', backgroundColor: '#ffffff'}}>
           <Title></Title>
           <div className="grid-sm">
             {budgets && budgets.length > 0 ? (

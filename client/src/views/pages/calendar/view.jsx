@@ -48,55 +48,74 @@ const View = ( {open, onClose , date, edit, closeEdit, onSave}) => {
   return (
     <>
         <Drawer sx={{width: '500px'}} anchor="right" open={open} onClose={onClose}>
-        <div style={{padding: '16px' }}>
-          <Box sx={{display:'flex', justifyContent: 'space-between'}}>
+        <div style={{padding: '16px', width: '300px' }}>
+          <Box sx={{display:'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <Typography variant="h3">{date}</Typography>
             <Button variant="contained" color="primary" onClick={handleEventClick}>
-              Add New Event
+              New Event
             </Button>
           </Box>
           <Divider sx={{ marginTop: '8px', marginBottom: '16px' }} /> {/* Divider below date */}
           <Box>
-          <Typography variant="h5" sx={{marginBottom: '10px'}}>Events</Typography>
-            {choosenDate.map((item) => (
-                <CalendarCard key={item.id} title={item.title} content 
-                sx={{
-                  borderLeft: `5px solid ${item.color}`, // Set left border color based on item.color
-                  paddingLeft: '16px', 
-                  paddingRight: '16px',// Add padding to separate text from border
-                  marginBottom: '10px'
-                }}
-                contentSX= {{
-                  padding: '0px'
-                }}>
-                <Box sx={{display: 'flex',
-                justifyContent: 'flex-start',
-                gap: '10px'}}>
-                <Typography>Start: {formatDate(item.start)}</Typography>
-                <Typography>End: {formatDate(item.end)}</Typography>
-                </Box>
-                <Typography>All Day: {item.allDay ? 'Yes' : 'No'}</Typography>
-                <Typography>Description: {item.description}</Typography>
-              </CalendarCard>
-              ))}
+            <Typography variant="h5" sx={{marginBottom: '10px'}}>Events</Typography>
+            {choosenDate.length === 0 ? (
+              <Typography>No event</Typography>
+            ) : (
+              choosenDate.map((item) => (
+                <CalendarCard
+                  key={item.id}
+                  title={item.title}
+                  sx={{
+                    borderLeft: `5px solid ${item.color}`,
+                    paddingLeft: '16px',
+                    paddingRight: '16px',
+                    marginBottom: '10px'
+                  }}
+                  contentSX={{
+                    padding: '0px'
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'flex-start',
+                      gap: '10px'
+                    }}
+                  >
+                    <Typography>Start: {formatDate(item.start)}</Typography>
+                    <Typography>End: {formatDate(item.end)}</Typography>
+                  </Box>
+                  <Typography>All Day: {item.allDay ? 'Yes' : 'No'}</Typography>
+                  <Typography>Description: {item.description}</Typography>
+                </CalendarCard>
+              ))
+            )}
           </Box>
           <Divider sx={{ marginTop: '8px', marginBottom: '16px' }} /> {/* Divider below date */}
           <Box>
           <Typography variant="h5" sx={{marginBottom: '10px'}}>Tasks</Typography>
-            {choosenTask.map((item) => (
-                <CalendarCard key={item.id} title={item.title} content 
+          {choosenTask.length === 0 ? (
+            <Typography>No task</Typography>
+          ) : (
+            choosenTask.map((item) => (
+              <CalendarCard
+                key={item.id}
+                title={item.title}
                 sx={{
-                  borderLeft: `5px solid ${item.color}`, // Set left border color based on item.color
-                  paddingLeft: '16px', 
-                  paddingRight: '16px'// Add padding to separate text from border
+                  borderLeft: `5px solid ${item.color}`,
+                  paddingLeft: '16px',
+                  paddingRight: '16px'
                 }}
-                contentSX= {{
+                contentSX={{
                   padding: '0px'
-                }}>
+                }}
+              >
                 <Typography>Description: {item.desc}</Typography>
               </CalendarCard>
-              ))}
-          </Box>
+            ))
+          )}
+</Box>
+
           
         </div>
       </Drawer>

@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   width: 100%;
   min-width: 250px;
-  background-color: #fafafa;
+  background-color: #ffffff;
   padding: 40px;
 `;
 

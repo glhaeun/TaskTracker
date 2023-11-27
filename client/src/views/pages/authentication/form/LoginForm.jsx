@@ -217,7 +217,7 @@ const LoginForm = ({ ...others }) => {
                 component={Link}
                 to="/forgot-password"
                 variant="subtitle1"
-                color="secondary"
+                color="primary"
                 sx={{ textDecoration: "none", cursor: "pointer" }}
               >
                 Forgot Password?
@@ -237,7 +237,7 @@ const LoginForm = ({ ...others }) => {
                   size="large"
                   type="submit"
                   variant="contained"
-                  color="dark"
+                  color="primary"
                 >
                   <div style={{ color: "white" }}>Sign in</div>
                 </Button>
